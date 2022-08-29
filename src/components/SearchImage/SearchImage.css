@@ -1,0 +1,8 @@
+.search-img {
+  height: 100vh;
+}
+
+.image {
+  display: flex;
+  justify-content: center;
+}
