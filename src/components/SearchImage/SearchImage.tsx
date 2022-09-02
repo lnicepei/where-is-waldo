@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import image from "./pierre-roussel-laptop-deksmat1.jpg";
 import "./SearchImage.css";
 
 interface SearchImageProps {
@@ -20,12 +21,7 @@ const SearchImage = (props: SearchImageProps) => {
 
   return (
     <div className="image" onClick={(e) => handleClick(e)}>
-      <img
-        src="https://images5.alphacoders.com/700/700300.png"
-        alt=""
-        ref={imageRef}
-        className="search-img"
-      />
+      <img src={image} alt="Search Image" ref={imageRef} className="search-img" />
     </div>
   );
 };
