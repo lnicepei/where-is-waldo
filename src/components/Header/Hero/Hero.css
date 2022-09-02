@@ -1,0 +1,14 @@
+.hero {
+  display: flex;
+  align-items: center;
+  margin: auto;
+  height: 100px;
+}
+
+.hero--img {
+  height: 100px;
+}
+
+.found {
+  opacity: .3;
+}
