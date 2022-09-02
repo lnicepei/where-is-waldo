@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import Crosshair from "../Crosshair/Crosshair";
 import SearchImage from "../SearchImage/SearchImage";
 import Header from "../Header/Header";
@@ -8,6 +8,7 @@ import "firebase/compat/firestore";
 import "firebase/compat/app";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import "firebase/firestore";
+import Heroes from "../Header/Heroes";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBty4ic-Qsr_wyXC_CK2XHAnxve7jE1Ysw",
@@ -18,7 +19,17 @@ const firebaseConfig = {
   appId: "1:750759008904:web:3ddab790d89d56c29e9d3d",
 };
 
+interface HeroInterface {
+  name: string;
+  found: boolean;
+  image: string;
+}
+
+export const AppContext = createContext(null);
+
 const Game = () => {
+  const [heroes, setHeroes] = useState(Heroes);
+
   const [coordinateX, setCoordinateX] = useState(0);
   const [coordinateY, setCoordinateY] = useState(0);
   const [wasClicked, setWasClicked] = useState(false);
@@ -26,10 +37,11 @@ const Game = () => {
   const [rightCoordinates, setRightCoordinates] = useState<
     { name: string; position: string }[]
   >([]);
+
   const app = firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth(app);
   const db = firebase.firestore(app);
-  const positionRef = db.collection("positinOfCharacters");
+  const positionRef = db.collection("positionOfCharacters");
   const [position] = useCollectionData(positionRef, { idField: "id" });
 
   useEffect(() => {
@@ -38,20 +50,22 @@ const Game = () => {
 
   return (
     <div className="Game">
-      <Header />
-      <SearchImage
-        setCoordinateX={setCoordinateX}
-        setCoordinateY={setCoordinateY}
-        setWasClicked={setWasClicked}
-      />
-      {wasClicked && (
-        <Crosshair
-          coordinateX={coordinateX}
-          coordinateY={coordinateY}
+      <AppContext.Provider value={{ heroes, setHeroes }}>
+        <Header />
+        <SearchImage
+          setCoordinateX={setCoordinateX}
+          setCoordinateY={setCoordinateY}
           setWasClicked={setWasClicked}
-          rightCoordinates={rightCoordinates}
         />
-      )}
+        {wasClicked && (
+          <Crosshair
+            coordinateX={coordinateX}
+            coordinateY={coordinateY}
+            rightCoordinates={rightCoordinates}
+            setWasClicked={setWasClicked}
+          />
+        )}
+      </AppContext.Provider>
     </div>
   );
 };
