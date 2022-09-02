@@ -1,9 +1,9 @@
+.search-container {
+  display: flex;
+  justify-content: center;
+}
+
 .search-img {
   width: 100vw;
   height: 100vh;
-}
-
-.image {
-  display: flex;
-  justify-content: center;
 }
