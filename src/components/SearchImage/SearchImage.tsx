@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import image from "./pierre-roussel-laptop-deksmat1.jpg";
+import image from "./pierre-roussel-laptop-deksmat1.png";
 import "./SearchImage.css";
 
 interface SearchImageProps {
@@ -13,6 +13,8 @@ const SearchImage = (props: SearchImageProps) => {
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
     if (imageRef.current == e.target) {
+      // props.setCoordinateX(e.pageX);
+      // props.setCoordinateY(e.pageY);
       props.setCoordinateX(e.pageX - 25);
       props.setCoordinateY(e.pageY - 25);
       props.setWasClicked((prevWasClicked) => !prevWasClicked);
@@ -20,7 +22,7 @@ const SearchImage = (props: SearchImageProps) => {
   };
 
   return (
-    <div className="image" onClick={(e) => handleClick(e)}>
+    <div className="search-container" onClick={(e) => handleClick(e)}>
       <img src={image} alt="Search Image" ref={imageRef} className="search-img" />
     </div>
   );
