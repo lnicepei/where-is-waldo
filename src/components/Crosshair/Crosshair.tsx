@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Crosshair.css";
 
 interface CrosshairProps {
   coordinateX: number;
   coordinateY: number;
+  rightCoordinates: { name: string; position: string }[];
   setWasClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -19,6 +20,18 @@ const Crosshair = (props: CrosshairProps) => {
   };
 
   const handleChoiceClick = (name: string) => {
+    console.log(props.coordinateX, props.coordinateY);
+    props.rightCoordinates.forEach((character, index) => {
+      if (character[name]) {
+        console.log(+character[name].split(" ")[0]);
+        if (
+          Math.abs(props.coordinateX - +character[name].split(" ")[0]) <= 25 &&
+          Math.abs(props.coordinateY - +character[name].split(" ")[1]) <= 25
+        ) {
+          alert("You guessed right!");
+        }
+      }
+    });
     props.setWasClicked((prevWasClicked) => !prevWasClicked);
   };
 
@@ -27,22 +40,22 @@ const Crosshair = (props: CrosshairProps) => {
       <div className="square" style={centerStyle}></div>
       <div className="options">
         <button
-          onClick={() => handleChoiceClick("Waldo")}
+          onClick={() => handleChoiceClick("Imposter")}
           className="option option-1"
         >
-          Waldo
+          Imposter
         </button>
         <button
-          onClick={() => handleChoiceClick("Snorty")}
+          onClick={() => handleChoiceClick("Keanu")}
           className="option option-2"
         >
-          Snotry
+          Keanu
         </button>
         <button
-          onClick={() => handleChoiceClick("Timmy")}
+          onClick={() => handleChoiceClick("Steve")}
           className="option option-3"
         >
-          Timmy
+          Steve
         </button>
       </div>
     </div>
