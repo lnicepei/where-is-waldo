@@ -25,7 +25,21 @@ interface HeroInterface {
   image: string;
 }
 
-export const AppContext = createContext(null);
+export interface GlobalContext {
+  heroes: HeroInterface[];
+  setHeroes: React.Dispatch<React.SetStateAction<HeroInterface[]>>;
+}
+
+export const AppContext = createContext<GlobalContext>({
+  heroes: [
+    {
+      name: "",
+      found: false,
+      image: "",
+    },
+  ],
+  setHeroes: () => {},
+});
 
 const Game = () => {
   const [heroes, setHeroes] = useState(Heroes);
