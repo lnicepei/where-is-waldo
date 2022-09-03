@@ -62,6 +62,16 @@ const Game = () => {
     setRightCoordinates(position);
   }, [position]);
 
+  useEffect(() => {
+    if (heroes.every((hero) => hero.found == true)) {
+      setHeroes((prevHeroes) =>
+        prevHeroes.map((hero) => {
+          return { ...hero, found: false };
+        })
+      );
+    }
+  }, [heroes]);
+
   return (
     <div className="Game">
       <AppContext.Provider value={{ heroes, setHeroes }}>

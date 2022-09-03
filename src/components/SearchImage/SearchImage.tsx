@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import image from "./pierre-roussel-laptop-deksmat1.png";
-import "./SearchImage.css";
+import { StyledSearchContainer, StyledSearchImage } from "./SearchImage.style";
 
 interface SearchImageProps {
   setCoordinateX: React.Dispatch<React.SetStateAction<number>>;
@@ -21,14 +21,17 @@ const SearchImage = (props: SearchImageProps) => {
   };
 
   return (
-    <div className="search-container" onClick={(e) => handleClick(e)}>
-      <img
+    <StyledSearchContainer
+      className="search-container"
+      onClick={(e) => handleClick(e)}
+    >
+      <StyledSearchImage
         src={image}
         alt="Search Image"
         ref={imageRef}
         className="search-img"
       />
-    </div>
+    </StyledSearchContainer>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { AppContext } from "../Game/Game";
-import "./Crosshair.css";
+import { StyledCrosshair, StyledOptions } from "./Crosshair.style";
 import CrosshairButton from "./CrosshairButton/CrosshairButton";
 
 interface CrosshairProps {
@@ -15,12 +15,7 @@ interface Character {
   position: string;
 }
 
-const Crosshair = (props: CrosshairProps) => {
-  const crosshairStyle = {
-    left: (props.coordinateX / window.innerWidth) * 100 + "%",
-    top: (props.coordinateY / window.innerHeight) * 100 + "%",
-  };
-
+const Crosshair: React.FC<CrosshairProps> = (props) => {
   const { heroes, setHeroes } = useContext(AppContext);
 
   const handleChoiceClick = (name: string) => {
@@ -51,8 +46,13 @@ const Crosshair = (props: CrosshairProps) => {
   };
 
   return (
-    <div className="crosshair" style={crosshairStyle}>
-      <div className="options">
+    <StyledCrosshair
+      coordinateX={props.coordinateX}
+      coordinateY={props.coordinateY}
+      windowWidth={window.innerWidth}
+      windowHeight={window.innerHeight}
+    >
+      <StyledOptions>
         {heroes.map((hero) => {
           return (
             <CrosshairButton
@@ -62,8 +62,8 @@ const Crosshair = (props: CrosshairProps) => {
             />
           );
         })}
-      </div>
-    </div>
+      </StyledOptions>
+    </StyledCrosshair>
   );
 };
 

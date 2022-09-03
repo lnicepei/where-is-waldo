@@ -1,4 +1,5 @@
 import React from "react";
+import { StyledOption } from "../Crosshair.style";
 
 interface CrosshairButtonProps {
   name: string;
@@ -6,16 +7,16 @@ interface CrosshairButtonProps {
   handleChoiceClick: (name: string) => void;
 }
 
-const CrosshairButton = (props: CrosshairButtonProps) => {
+const CrosshairButton: React.FC<CrosshairButtonProps> = (props) => {
   return (
     <>
       {!props.found && (
-        <button
+        <StyledOption
           onClick={() => props.handleChoiceClick(props.name)}
           className="option"
         >
           {props.name}
-        </button>
+        </StyledOption>
       )}
     </>
   );

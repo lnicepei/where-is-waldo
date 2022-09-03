@@ -1,23 +1,18 @@
 import React from "react";
-import "./Hero.css";
+import styled from "styled-components";
 
 interface HeroProps {
   name: string;
   image: string;
   found: boolean;
+  className?: string;
 }
 
-const Hero = (props: HeroProps) => {
+const Hero: React.FC<HeroProps> = (props) => {
   return (
-    <div className="hero">
-      {!props.found && <h2 className="hero--name">{props.name}</h2>}
-      {!props.found && (
-        <img className="hero--img" src={props.image} alt={props.name} />
-      )}
-      {props.found && <h2 className="hero--name found">{props.name}</h2>}
-      {props.found && (
-        <img className="hero--img found" src={props.image} alt={props.name} />
-      )}
+    <div className={props.className}>
+      <h2 className="hero--name">{props.name}</h2>
+      <img className="hero--img" src={props.image} alt={props.name} />
     </div>
   );
 };
