@@ -13,17 +13,21 @@ const SearchImage = (props: SearchImageProps) => {
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
     if (imageRef.current == e.target) {
-      // props.setCoordinateX(e.pageX);
-      // props.setCoordinateY(e.pageY);
-      props.setCoordinateX(e.pageX - 25);
-      props.setCoordinateY(e.pageY - 25);
+      //positions the crosshair
+      props.setCoordinateX(e.pageX);
+      props.setCoordinateY(e.pageY);
       props.setWasClicked((prevWasClicked) => !prevWasClicked);
     }
   };
 
   return (
     <div className="search-container" onClick={(e) => handleClick(e)}>
-      <img src={image} alt="Search Image" ref={imageRef} className="search-img" />
+      <img
+        src={image}
+        alt="Search Image"
+        ref={imageRef}
+        className="search-img"
+      />
     </div>
   );
 };
