@@ -3,12 +3,12 @@ import Crosshair from "../Crosshair/Crosshair";
 import SearchImage from "../SearchImage/SearchImage";
 import Header from "../Header/Header";
 import firebase from "firebase/compat/app";
+import Heroes from "../Header/Heroes";
+
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import "firebase/compat/app";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import "firebase/firestore";
-import Heroes from "../Header/Heroes";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBty4ic-Qsr_wyXC_CK2XHAnxve7jE1Ysw",
