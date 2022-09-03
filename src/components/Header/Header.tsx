@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import { AppContext } from "../Game/Game";
 import "./Header.css";
 import Hero from "./Hero/Hero";
-// import Heroes from "./Heroes";
 
 const Header = () => {
   const { heroes } = useContext(AppContext);
