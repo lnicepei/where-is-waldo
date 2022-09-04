@@ -10,7 +10,13 @@ const SearchImageChoiceMenu: React.FC<SearchImageChoiceMenuProps> = (props) => {
   return (
     <>
       {searchImages.map((image) => {
-        return <SearchImageChoiceCard name={image.name} url={image.url} />;
+        return (
+          <SearchImageChoiceCard
+            name={image.name}
+            url={image.url}
+            heroes={image.heroes}
+          />
+        );
       })}
     </>
   );
