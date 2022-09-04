@@ -25,8 +25,3 @@ export const StyledSearchImageContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
-// export const StyledSearchImageChoiceMenu = styled.div`
-//   display: flex;
-//   background-color: red;
-// `
