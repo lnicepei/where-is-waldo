@@ -3,7 +3,7 @@ import Crosshair from "../Crosshair/Crosshair";
 import SearchImage from "../SearchImage/SearchImage";
 import Header from "../Header/Header";
 import firebase from "firebase/compat/app";
-import { Heroes } from "../Header/Heroes";
+import searchImages from "../SearchImage/SearchImages";
 
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
@@ -19,7 +19,7 @@ const firebaseConfig = {
   appId: "1:750759008904:web:3ddab790d89d56c29e9d3d",
 };
 
-interface HeroInterface {
+export interface HeroInterface {
   name: string;
   found: boolean;
   image: string;
@@ -27,9 +27,13 @@ interface HeroInterface {
 
 export interface GlobalContext {
   heroes: HeroInterface[];
-  wasImageChosen: boolean;
   setHeroes: React.Dispatch<React.SetStateAction<HeroInterface[]>>;
+  wasImageChosen: boolean;
   setWasImageChosen: React.Dispatch<React.SetStateAction<boolean>>;
+  currentSearchImage: string;
+  setCurrentSearchImage: React.Dispatch<React.SetStateAction<string>>;
+  currentSearchImageURL: string;
+  setCurrentSearchImageURL: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const AppContext = createContext<GlobalContext>({
@@ -40,15 +44,24 @@ export const AppContext = createContext<GlobalContext>({
       image: "",
     },
   ],
-  wasImageChosen: false,
   setHeroes: () => {},
+  wasImageChosen: false,
   setWasImageChosen: () => {},
+  currentSearchImage: "",
+  setCurrentSearchImage: () => {},
+  currentSearchImageURL: "",
+  setCurrentSearchImageURL: () => {},
 });
 
 const Game = () => {
-  // take all the data about heroes from Heroes file
-  // TODO: import and use appropriate heroes, not just any 
-  const [heroes, setHeroes] = useState(Heroes);
+  // set the initial value of heroes array
+  // const [heroes, setHeroes] = useState(Heroes);
+  const [heroes, setHeroes] = useState(searchImages[0].heroes!);
+
+  const [currentSearchImage, setCurrentSearchImage] = useState(
+    searchImages[0].name
+  );
+  const [currentSearchImageURL, setCurrentSearchImageURL] = useState("");
 
   // set the initial coordinates of search options container
   const [coordinateX, setCoordinateX] = useState(0);
@@ -65,11 +78,14 @@ const Game = () => {
     { name: string; position: string }[]
   >([]);
 
+  //FIXME: you can't play the same game twice
+
   // initialize firebase storage and get the coordinates from there
+  // by the name of the image
   const app = firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth(app);
   const db = firebase.firestore(app);
-  const positionRef = db.collection("deskmat1");
+  const positionRef = db.collection(currentSearchImage);
   const [position] = useCollectionData(positionRef, { idField: "id" });
 
   // set right coordinates after each render of the page
@@ -92,20 +108,29 @@ const Game = () => {
   return (
     <div className="Game">
       <AppContext.Provider
-        value={{ heroes, wasImageChosen, setHeroes, setWasImageChosen }}
+        value={{
+          heroes,
+          setHeroes,
+          wasImageChosen,
+          setWasImageChosen,
+          currentSearchImage,
+          setCurrentSearchImage,
+          currentSearchImageURL,
+          setCurrentSearchImageURL,
+        }}
       >
         {wasImageChosen && <Header />}
         <SearchImage
+          setWasClicked={setWasClicked}
           setCoordinateX={setCoordinateX}
           setCoordinateY={setCoordinateY}
-          setWasClicked={setWasClicked}
         />
         {wasClicked && (
           <Crosshair
             coordinateX={coordinateX}
             coordinateY={coordinateY}
-            rightCoordinates={rightCoordinates}
             setWasClicked={setWasClicked}
+            rightCoordinates={rightCoordinates}
           />
         )}
       </AppContext.Provider>
