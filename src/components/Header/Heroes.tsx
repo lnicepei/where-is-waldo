@@ -1,4 +1,4 @@
-const Heroes = [
+export const Heroes = [
   {
     name: "Imposter",
     found: false,
@@ -18,4 +18,4 @@ const Heroes = [
   },
 ];
 
-export default Heroes;
+
