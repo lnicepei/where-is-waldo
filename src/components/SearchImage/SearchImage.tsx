@@ -1,6 +1,13 @@
-import React, { useRef } from "react";
-import image from "./pierre-roussel-laptop-deksmat1.png";
-import { StyledSearchContainer, StyledSearchImage } from "./SearchImage.style";
+import React, { useRef, useState, useContext } from "react";
+import image from "./SearchImages/pierre-roussel-laptop-deksmat1.png";
+import {
+  StyledSearchContainer,
+  StyledSearchImage,
+  StyledSearchImageChoiceMenu,
+  StyledSearchImageContainer,
+} from "./SearchImage.style";
+import SearchImageChoiceMenu from "./SearchImageChoiceMenu/SearchImageChoiceMenu";
+import { AppContext } from "../Game/Game";
 
 interface SearchImageProps {
   setCoordinateX: React.Dispatch<React.SetStateAction<number>>;
@@ -10,6 +17,7 @@ interface SearchImageProps {
 
 const SearchImage = (props: SearchImageProps) => {
   const imageRef = useRef(null);
+  const { wasImageChosen } = useContext(AppContext);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
     if (imageRef.current == e.target) {
@@ -21,17 +29,15 @@ const SearchImage = (props: SearchImageProps) => {
   };
 
   return (
-    <StyledSearchContainer
-      className="search-container"
-      onClick={(e) => handleClick(e)}
-    >
-      <StyledSearchImage
-        src={image}
-        alt="Search Image"
-        ref={imageRef}
-        className="search-img"
-      />
-    </StyledSearchContainer>
+    <StyledSearchImageContainer>
+      {wasImageChosen ? (
+        <StyledSearchContainer onClick={(e) => handleClick(e)}>
+          <StyledSearchImage src={image} alt="Search Image" ref={imageRef} />
+        </StyledSearchContainer>
+      ) : (
+        <StyledSearchImageChoiceMenu />
+      )}
+    </StyledSearchImageContainer>
   );
 };
 
