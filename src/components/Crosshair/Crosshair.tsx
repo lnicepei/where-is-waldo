@@ -18,6 +18,9 @@ interface Character {
 const Crosshair: React.FC<CrosshairProps> = (props) => {
   const { heroes, setHeroes } = useContext(AppContext);
 
+  // if the difference between click coordinates and
+  // the coordinates of characters is less than 1% Ox and 2.5% Oy
+  // -> mark found character as found
   const handleChoiceClick = (name: string) => {
     props.rightCoordinates.forEach((character) => {
       if (character[name as keyof Character]) {

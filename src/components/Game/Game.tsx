@@ -46,28 +46,38 @@ export const AppContext = createContext<GlobalContext>({
 });
 
 const Game = () => {
+  // take all the data about heroes from Heroes file
+  // TODO: import and use appropriate heroes, not just any 
   const [heroes, setHeroes] = useState(Heroes);
 
+  // set the initial coordinates of search options container
   const [coordinateX, setCoordinateX] = useState(0);
   const [coordinateY, setCoordinateY] = useState(0);
 
+  // if false -> hide search options container
   const [wasClicked, setWasClicked] = useState(false);
+
+  // if false -> show search image options
   const [wasImageChosen, setWasImageChosen] = useState(false);
 
+  // set right coordinates of searched characters
   const [rightCoordinates, setRightCoordinates] = useState<
     { name: string; position: string }[]
   >([]);
 
+  // initialize firebase storage and get the coordinates from there
   const app = firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth(app);
   const db = firebase.firestore(app);
   const positionRef = db.collection("deskmat1");
   const [position] = useCollectionData(positionRef, { idField: "id" });
 
+  // set right coordinates after each render of the page
   useEffect(() => {
     setRightCoordinates(position);
   }, [position]);
 
+  // if all heroes were found -> restart the game
   useEffect(() => {
     if (heroes.every((hero) => hero.found == true)) {
       setHeroes((prevHeroes) =>

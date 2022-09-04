@@ -6,7 +6,6 @@ import {
   StyledSearchImageChoiceMenu,
   StyledSearchImageContainer,
 } from "./SearchImage.style";
-import SearchImageChoiceMenu from "./SearchImageChoiceMenu/SearchImageChoiceMenu";
 import { AppContext } from "../Game/Game";
 
 interface SearchImageProps {
@@ -19,9 +18,10 @@ const SearchImage = (props: SearchImageProps) => {
   const imageRef = useRef(null);
   const { wasImageChosen } = useContext(AppContext);
 
+  // sets the coordinates of crosshair to clicked position
+  // and hides it after the following click
   const handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
     if (imageRef.current == e.target) {
-      //positions the crosshair
       props.setCoordinateX(e.pageX);
       props.setCoordinateY(e.pageY);
       props.setWasClicked((prevWasClicked) => !prevWasClicked);
