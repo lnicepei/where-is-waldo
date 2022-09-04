@@ -11,7 +11,7 @@ interface Props {
 export const StyledHeader = styled.header`
   display: flex;
   flex-direction: row;
-  position: absolute;
+  position: fixed;
   top: 0;
   width: 100vw;
   padding: 10px;
@@ -19,6 +19,8 @@ export const StyledHeader = styled.header`
   color: white;
   backdrop-filter: blur(10px);
   user-select: none;
+  background-color: rgba(41, 59, 72, 0.3);
+  z-index: 2;
 
   img {
     height: 100px;
