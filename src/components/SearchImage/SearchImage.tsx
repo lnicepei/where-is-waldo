@@ -1,5 +1,4 @@
 import React, { useRef, useState, useContext } from "react";
-import image from "./SearchImages/pierre-roussel-laptop-deksmat1.png";
 import {
   StyledSearchContainer,
   StyledSearchImage,
@@ -16,11 +15,13 @@ interface SearchImageProps {
 
 const SearchImage = (props: SearchImageProps) => {
   const imageRef = useRef(null);
-  const { wasImageChosen } = useContext(AppContext);
+  const { wasImageChosen, currentSearchImageURL } = useContext(AppContext);
 
   // sets the coordinates of crosshair to clicked position
   // and hides it after the following click
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
+  const setCrosshairCoordinates = (
+    e: React.MouseEvent<HTMLDivElement>
+  ): void => {
     if (imageRef.current == e.target) {
       props.setCoordinateX(e.pageX);
       props.setCoordinateY(e.pageY);
@@ -31,8 +32,12 @@ const SearchImage = (props: SearchImageProps) => {
   return (
     <StyledSearchImageContainer>
       {wasImageChosen ? (
-        <StyledSearchContainer onClick={(e) => handleClick(e)}>
-          <StyledSearchImage src={image} alt="Search Image" ref={imageRef} />
+        <StyledSearchContainer onClick={(e) => setCrosshairCoordinates(e)}>
+          <StyledSearchImage
+            src={currentSearchImageURL}
+            alt="Search Image"
+            ref={imageRef}
+          />
         </StyledSearchContainer>
       ) : (
         <StyledSearchImageChoiceMenu />
