@@ -3,7 +3,7 @@ import Crosshair from "../Crosshair/Crosshair";
 import SearchImage from "../SearchImage/SearchImage";
 import Header from "../Header/Header";
 import firebase from "firebase/compat/app";
-import Heroes from "../Header/Heroes";
+import { Heroes } from "../Header/Heroes";
 
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
@@ -27,7 +27,9 @@ interface HeroInterface {
 
 export interface GlobalContext {
   heroes: HeroInterface[];
+  wasImageChosen: boolean;
   setHeroes: React.Dispatch<React.SetStateAction<HeroInterface[]>>;
+  setWasImageChosen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const AppContext = createContext<GlobalContext>({
@@ -38,7 +40,9 @@ export const AppContext = createContext<GlobalContext>({
       image: "",
     },
   ],
+  wasImageChosen: false,
   setHeroes: () => {},
+  setWasImageChosen: () => {},
 });
 
 const Game = () => {
@@ -46,7 +50,9 @@ const Game = () => {
 
   const [coordinateX, setCoordinateX] = useState(0);
   const [coordinateY, setCoordinateY] = useState(0);
+
   const [wasClicked, setWasClicked] = useState(false);
+  const [wasImageChosen, setWasImageChosen] = useState(false);
 
   const [rightCoordinates, setRightCoordinates] = useState<
     { name: string; position: string }[]
@@ -55,7 +61,7 @@ const Game = () => {
   const app = firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth(app);
   const db = firebase.firestore(app);
-  const positionRef = db.collection("positionOfCharacters");
+  const positionRef = db.collection("deskmat1");
   const [position] = useCollectionData(positionRef, { idField: "id" });
 
   useEffect(() => {
@@ -69,13 +75,16 @@ const Game = () => {
           return { ...hero, found: false };
         })
       );
+      setWasImageChosen(false);
     }
   }, [heroes]);
 
   return (
     <div className="Game">
-      <AppContext.Provider value={{ heroes, setHeroes }}>
-        <Header />
+      <AppContext.Provider
+        value={{ heroes, wasImageChosen, setHeroes, setWasImageChosen }}
+      >
+        {wasImageChosen && <Header />}
         <SearchImage
           setCoordinateX={setCoordinateX}
           setCoordinateY={setCoordinateY}
