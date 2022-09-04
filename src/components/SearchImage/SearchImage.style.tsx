@@ -3,7 +3,6 @@ import SearchImageChoiceMenu from "./SearchImageChoiceMenu/SearchImageChoiceMenu
 
 export const StyledSearchImage = styled.img`
   width: 100vw;
-  height: 100vh;
 `;
 
 export const StyledSearchContainer = styled.div`
@@ -24,4 +23,17 @@ export const StyledSearchImageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+export const StyledChooseCard = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const StyledChooseTitle = styled.h1`
+  font-size: 1rem;
+`;
+
+export const StyledChooseImage = styled.img`
+  width: 200px;
 `;
