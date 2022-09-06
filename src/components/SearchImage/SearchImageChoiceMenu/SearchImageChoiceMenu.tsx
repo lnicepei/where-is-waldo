@@ -7,6 +7,7 @@ interface SearchImageChoiceMenuProps {
 }
 
 const SearchImageChoiceMenu: React.FC<SearchImageChoiceMenuProps> = (props) => {
+  console.log("menu rendered");
   return (
     <>
       {searchImages.map((image) => {
@@ -15,6 +16,7 @@ const SearchImageChoiceMenu: React.FC<SearchImageChoiceMenuProps> = (props) => {
             name={image.name}
             url={image.url}
             heroes={image.heroes}
+            key={image.name}
           />
         );
       })}
