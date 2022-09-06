@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useContext, useState } from "react";
 import {
   StyledSearchContainer,
   StyledSearchImage,
@@ -6,16 +6,15 @@ import {
   StyledSearchImageContainer,
 } from "./SearchImage.style";
 import { AppContext } from "../Game/Game";
+import Crosshair from "../Crosshair/Crosshair";
 
-interface SearchImageProps {
-  setCoordinateX: React.Dispatch<React.SetStateAction<number>>;
-  setCoordinateY: React.Dispatch<React.SetStateAction<number>>;
-  setWasClicked: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const SearchImage = (props: SearchImageProps) => {
+const SearchImage = () => {
   const imageRef = useRef(null);
-  const { wasImageChosen, currentSearchImageURL } = useContext(AppContext);
+  const { currentSearchImageURL } = useContext(AppContext);
+
+  const [coordinateX, setCoordinateX] = useState(0);
+  const [coordinateY, setCoordinateY] = useState(0);
+  const [wasClicked, setWasClicked] = useState(false);
 
   // sets the coordinates of crosshair to clicked position
   // and hides it after the following click
@@ -23,15 +22,17 @@ const SearchImage = (props: SearchImageProps) => {
     e: React.MouseEvent<HTMLDivElement>
   ): void => {
     if (imageRef.current == e.target) {
-      props.setCoordinateX(e.pageX);
-      props.setCoordinateY(e.pageY);
-      props.setWasClicked((prevWasClicked) => !prevWasClicked);
+      setCoordinateX(e.pageX);
+      setCoordinateY(e.pageY);
+      setWasClicked((prevWasClicked) => !prevWasClicked);
     }
   };
 
+  console.log("SearchImage component rendered");
+
   return (
     <StyledSearchImageContainer>
-      {wasImageChosen ? (
+      {currentSearchImageURL ? (
         <StyledSearchContainer onClick={(e) => setCrosshairCoordinates(e)}>
           <StyledSearchImage
             src={currentSearchImageURL}
@@ -41,6 +42,13 @@ const SearchImage = (props: SearchImageProps) => {
         </StyledSearchContainer>
       ) : (
         <StyledSearchImageChoiceMenu />
+      )}
+      {wasClicked && (
+        <Crosshair
+          coordinateX={coordinateX}
+          coordinateY={coordinateY}
+          setWasClicked={setWasClicked}
+        />
       )}
     </StyledSearchImageContainer>
   );
