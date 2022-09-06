@@ -9,7 +9,12 @@ const Header = () => {
     <StyledHeader>
       {heroes.map((hero) => {
         return (
-          <StyledHero name={hero.name} image={hero.image} found={hero.found} />
+          <StyledHero
+            name={hero.name}
+            image={hero.image}
+            found={hero.found}
+            key={hero.name}
+          />
         );
       })}
     </StyledHeader>
