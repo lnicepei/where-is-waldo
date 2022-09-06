@@ -6,7 +6,6 @@ import CrosshairButton from "./CrosshairButton/CrosshairButton";
 interface CrosshairProps {
   coordinateX: number;
   coordinateY: number;
-  rightCoordinates: { name: string; position: string }[];
   setWasClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -16,23 +15,23 @@ interface Character {
 }
 
 const Crosshair: React.FC<CrosshairProps> = (props) => {
-  const { heroes, setHeroes } = useContext(AppContext);
+  const { heroes, setHeroes, rightCoordinates } = useContext(AppContext);
 
   // if the difference between click coordinates and
   // the coordinates of characters is less than 1% Ox and 2.5% Oy
   // -> mark found character as found
   const handleChoiceClick = (name: string) => {
-    props.rightCoordinates.forEach((character) => {
+    rightCoordinates.forEach((character) => {
       if (character[name as keyof Character]) {
         if (
-          Math.abs(
-            (props.coordinateX / window.innerWidth) * 100 -
-              +character[name as keyof Character].split(" ")[0]
-          ) <= 1 &&
-          Math.abs(
-            (props.coordinateY / window.innerHeight) * 100 -
-              +character[name as keyof Character].split(" ")[1]
-          ) <= 2.5
+          +character[name as keyof Character].split(" ")[0] <
+            (props.coordinateX / window.innerWidth) * 100 &&
+          +character[name as keyof Character].split(" ")[1] <
+            (props.coordinateY / window.innerHeight) * 100 &&
+          +character[name as keyof Character].split(" ")[2] >
+            (props.coordinateX / window.innerWidth) * 100 &&
+          +character[name as keyof Character].split(" ")[3] >
+            (props.coordinateY / window.innerHeight) * 100
         ) {
           setHeroes((prevHeroes) => {
             return prevHeroes.map((hero) => {
@@ -62,6 +61,7 @@ const Crosshair: React.FC<CrosshairProps> = (props) => {
               name={hero.name}
               found={hero.found}
               handleChoiceClick={handleChoiceClick}
+              key={hero.name}
             />
           );
         })}
