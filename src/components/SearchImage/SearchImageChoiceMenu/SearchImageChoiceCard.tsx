@@ -9,19 +9,14 @@ interface SearchImageChoiceCardProps {
 }
 
 const SearchImageChoiceCard: React.FC<SearchImageChoiceCardProps> = (props) => {
-  const {
-    setWasImageChosen,
-    setCurrentSearchImageURL,
-    setHeroes,
-    setCurrentSearchImage,
-  } = useContext(AppContext);
+  const { setCurrentSearchImageURL, setHeroes, setCurrentSearchImage } =
+    useContext(AppContext);
 
   const handleChoiceClick = () => {
-    // TODO: choose current game image on this button click
+    // FIXME: you can't play the same game twice
     setHeroes(props.heroes);
     setCurrentSearchImage(props.name);
     setCurrentSearchImageURL(props.url);
-    setWasImageChosen((prevWasImageChosen) => !prevWasImageChosen);
   };
 
   return (
