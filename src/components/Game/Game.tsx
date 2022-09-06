@@ -28,8 +28,7 @@ export interface HeroInterface {
 export interface GlobalContext {
   heroes: HeroInterface[];
   setHeroes: React.Dispatch<React.SetStateAction<HeroInterface[]>>;
-  wasImageChosen: boolean;
-  setWasImageChosen: React.Dispatch<React.SetStateAction<boolean>>;
+  rightCoordinates: { name: string; position: string }[];
   currentSearchImage: string;
   setCurrentSearchImage: React.Dispatch<React.SetStateAction<string>>;
   currentSearchImageURL: string;
@@ -45,8 +44,7 @@ export const AppContext = createContext<GlobalContext>({
     },
   ],
   setHeroes: () => {},
-  wasImageChosen: false,
-  setWasImageChosen: () => {},
+  rightCoordinates: [{ name: "", position: "" }],
   currentSearchImage: "",
   setCurrentSearchImage: () => {},
   currentSearchImageURL: "",
@@ -55,23 +53,13 @@ export const AppContext = createContext<GlobalContext>({
 
 const Game = () => {
   // set the initial value of heroes array
-  // const [heroes, setHeroes] = useState(Heroes);
-  const [heroes, setHeroes] = useState(searchImages[0].heroes!);
+  const [heroes, setHeroes] = useState(searchImages[0].heroes);
 
   const [currentSearchImage, setCurrentSearchImage] = useState(
     searchImages[0].name
   );
+
   const [currentSearchImageURL, setCurrentSearchImageURL] = useState("");
-
-  // set the initial coordinates of search options container
-  const [coordinateX, setCoordinateX] = useState(0);
-  const [coordinateY, setCoordinateY] = useState(0);
-
-  // if false -> hide search options container
-  const [wasClicked, setWasClicked] = useState(false);
-
-  // if false -> show search image options
-  const [wasImageChosen, setWasImageChosen] = useState(false);
 
   // set right coordinates of searched characters
   const [rightCoordinates, setRightCoordinates] = useState<
@@ -81,19 +69,19 @@ const Game = () => {
   //FIXME: you can't play the same game twice
 
   // initialize firebase storage and get the coordinates from there
-  // by the name of the image
+  //  by the name of the image
   const app = firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth(app);
   const db = firebase.firestore(app);
   const positionRef = db.collection(currentSearchImage);
   const [position] = useCollectionData(positionRef, { idField: "id" });
 
-  // set right coordinates after each render of the page
   useEffect(() => {
     setRightCoordinates(position);
   }, [position]);
 
-  // if all heroes were found -> restart the game
+  // if all heroes were found -> restart the game and
+  // clear current image url
   useEffect(() => {
     if (heroes.every((hero) => hero.found == true)) {
       setHeroes((prevHeroes) =>
@@ -101,9 +89,11 @@ const Game = () => {
           return { ...hero, found: false };
         })
       );
-      setWasImageChosen(false);
+      setCurrentSearchImageURL("");
     }
   }, [heroes]);
+
+  console.log("app component rerendered");
 
   return (
     <div className="Game">
@@ -111,28 +101,15 @@ const Game = () => {
         value={{
           heroes,
           setHeroes,
-          wasImageChosen,
-          setWasImageChosen,
+          rightCoordinates,
           currentSearchImage,
           setCurrentSearchImage,
           currentSearchImageURL,
           setCurrentSearchImageURL,
         }}
       >
-        {wasImageChosen && <Header />}
-        <SearchImage
-          setWasClicked={setWasClicked}
-          setCoordinateX={setCoordinateX}
-          setCoordinateY={setCoordinateY}
-        />
-        {wasClicked && (
-          <Crosshair
-            coordinateX={coordinateX}
-            coordinateY={coordinateY}
-            setWasClicked={setWasClicked}
-            rightCoordinates={rightCoordinates}
-          />
-        )}
+        {currentSearchImageURL && <Header />}
+        <SearchImage />
       </AppContext.Provider>
     </div>
   );
