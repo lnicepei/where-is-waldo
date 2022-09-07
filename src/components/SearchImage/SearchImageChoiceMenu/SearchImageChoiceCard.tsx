@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { AppContext, HeroInterface } from "../../Game/Game";
 import { StyledChooseCard, StyledChooseImage } from "../SearchImage.style";
+import searchImages from "../SearchImages";
 
 interface SearchImageChoiceCardProps {
   url: string;
@@ -9,12 +10,15 @@ interface SearchImageChoiceCardProps {
 }
 
 const SearchImageChoiceCard: React.FC<SearchImageChoiceCardProps> = (props) => {
-  const { setCurrentSearchImageURL, setHeroes, setCurrentSearchImage } =
+  const { setCurrentSearchImageURL, heroes, setHeroes, setCurrentSearchImage } =
     useContext(AppContext);
 
   const handleChoiceClick = () => {
-    // FIXME: you can't play the same game twice
-    setHeroes(props.heroes);
+    setHeroes(
+      props.heroes.map((hero) => {
+        return { ...hero, found: false };
+      })
+    );
     setCurrentSearchImage(props.name);
     setCurrentSearchImageURL(props.url);
   };
