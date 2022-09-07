@@ -9,7 +9,7 @@ import { AppContext } from "../Game/Game";
 import Crosshair from "../Crosshair/Crosshair";
 
 const SearchImage = () => {
-  const imageRef = useRef(null);
+  const imageRef = useRef<HTMLImageElement>(null);
   const { currentSearchImageURL, heroes, setCurrentSearchImageURL } =
     useContext(AppContext);
 
@@ -56,6 +56,7 @@ const SearchImage = () => {
         crosshairCoordinateY={crosshairCoordinateY}
         wasClicked={wasClicked}
         setWasClicked={setWasClicked}
+        reference={imageRef}
       />
     </StyledSearchImageContainer>
   );
