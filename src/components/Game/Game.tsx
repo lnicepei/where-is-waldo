@@ -1,14 +1,17 @@
 import React, { useState, useEffect, createContext } from "react";
-import Crosshair from "../Crosshair/Crosshair";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+
 import SearchImage from "../SearchImage/SearchImage";
 import Header from "../Header/Header";
-import firebase from "firebase/compat/app";
 import searchImages from "../SearchImage/SearchImages";
+import firebase from "firebase/compat/app";
 
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import "firebase/compat/app";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+
+import { StyledGame } from "./Game.styles";
+import { DocumentData } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBty4ic-Qsr_wyXC_CK2XHAnxve7jE1Ysw",
@@ -28,7 +31,7 @@ export interface HeroInterface {
 export interface GlobalContext {
   heroes: HeroInterface[];
   setHeroes: React.Dispatch<React.SetStateAction<HeroInterface[]>>;
-  rightCoordinates: { name: string; position: string }[];
+  rightCoordinates?: DocumentData[];
   currentSearchImage: string;
   setCurrentSearchImage: React.Dispatch<React.SetStateAction<string>>;
   currentSearchImageURL: string;
@@ -63,7 +66,7 @@ const Game = () => {
 
   // set right coordinates of searched characters
   const [rightCoordinates, setRightCoordinates] = useState<
-    { name: string; position: string }[]
+    DocumentData[] | undefined
   >([]);
 
   // initialize firebase storage and get the coordinates from there
@@ -78,10 +81,10 @@ const Game = () => {
     setRightCoordinates(position);
   }, [position]);
 
-  console.log("game component rerendered");
+  console.log("game component rendered");
 
   return (
-    <div className="Game">
+    <StyledGame>
       <AppContext.Provider
         value={{
           heroes,
@@ -96,7 +99,7 @@ const Game = () => {
         {currentSearchImageURL && <Header />}
         <SearchImage />
       </AppContext.Provider>
-    </div>
+    </StyledGame>
   );
 };
 

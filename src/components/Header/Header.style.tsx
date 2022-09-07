@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import Hero from "./Hero/Hero";
 
@@ -34,7 +33,16 @@ export const StyledHeader = styled.header`
 export const StyledHero = styled(Hero)<Props>`
   display: flex;
   align-items: center;
+  justify-content: center;
   margin: auto;
   height: 100px;
+  width: 100%;
   opacity: ${(props) => (props.found ? 0.3 : 1)};
+/* 
+   img {
+  }
+
+  h2{
+
+  } */
 `;

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { AppContext } from "../Game/Game";
 import { StyledHeader, StyledHero } from "./Header.style";
 

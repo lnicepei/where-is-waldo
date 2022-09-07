@@ -22,7 +22,7 @@ const Crosshair: React.FC<CrosshairProps> = (props) => {
   // the coordinates of characters is less than 1% Ox and 2.5% Oy
   // -> mark found character as found
   const handleChoiceClick = (name: string) => {
-    rightCoordinates.forEach((character) => {
+    rightCoordinates?.forEach((character) => {
       if (character[name as keyof Character]) {
         if (
           +character[name as keyof Character].split(" ")[0] <

@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { AppContext, HeroInterface } from "../../Game/Game";
 import { StyledChooseCard, StyledChooseImage } from "../SearchImage.style";
-import searchImages from "../SearchImages";
 
 interface SearchImageChoiceCardProps {
   url: string;
@@ -10,7 +9,7 @@ interface SearchImageChoiceCardProps {
 }
 
 const SearchImageChoiceCard: React.FC<SearchImageChoiceCardProps> = (props) => {
-  const { setCurrentSearchImageURL, heroes, setHeroes, setCurrentSearchImage } =
+  const { setCurrentSearchImageURL, setHeroes, setCurrentSearchImage } =
     useContext(AppContext);
 
   const handleChoiceClick = () => {

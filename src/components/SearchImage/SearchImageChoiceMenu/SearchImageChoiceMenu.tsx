@@ -6,7 +6,7 @@ interface SearchImageChoiceMenuProps {
   className?: string;
 }
 
-const SearchImageChoiceMenu: React.FC<SearchImageChoiceMenuProps> = (props) => {
+const SearchImageChoiceMenu: React.FC<SearchImageChoiceMenuProps> = () => {
   console.log("menu rendered");
   return (
     <>

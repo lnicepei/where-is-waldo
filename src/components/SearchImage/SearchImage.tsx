@@ -10,7 +10,7 @@ import Crosshair from "../Crosshair/Crosshair";
 
 const SearchImage = () => {
   const imageRef = useRef(null);
-  const { currentSearchImageURL, heroes, setHeroes, setCurrentSearchImageURL } =
+  const { currentSearchImageURL, heroes, setCurrentSearchImageURL } =
     useContext(AppContext);
 
   const [crosshairCoordinateX, setCrosshairCoordinateX] = useState(0);
