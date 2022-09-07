@@ -10,8 +10,8 @@ interface HeroProps {
 const Hero: React.FC<HeroProps> = (props) => {
   return (
     <div className={props.className}>
-      <h2 className="hero--name">{props.name}</h2>
-      <img className="hero--img" src={props.image} alt={props.name} />
+      <h2>{props.name}</h2>
+      <img src={props.image} alt={props.name} />
     </div>
   );
 };
