@@ -13,6 +13,17 @@ import "firebase/compat/app";
 import { StyledGame } from "./Game.styles";
 import { DocumentData } from "firebase/firestore";
 
+import { configureStore } from "@reduxjs/toolkit";
+import { Provider } from "react-redux";
+
+import heroesReducer from "./SearchImage";
+
+const store = configureStore({
+  reducer: {
+    hero: heroesReducer,
+  },
+});
+
 const firebaseConfig = {
   apiKey: "AIzaSyBty4ic-Qsr_wyXC_CK2XHAnxve7jE1Ysw",
   authDomain: "where-is-waldo-bee31.firebaseapp.com",
@@ -85,6 +96,11 @@ const Game = () => {
 
   return (
     <StyledGame>
+      {/* <Provider store={store}>
+        {currentSearchImageURL && <Header />}
+        <Header />
+        <SearchImage />
+      </Provider> */}
       <AppContext.Provider
         value={{
           heroes,
