@@ -29,15 +29,9 @@ const SearchImage = () => {
     }
   };
 
-  // if all heroes were found -> restart the game and
-  // clear current image url
+  // if all heroes were found -> reset current image url
   useEffect(() => {
     if (heroes.every((hero) => hero.found == true)) {
-      setHeroes((prevHeroes) =>
-        prevHeroes.map((hero) => {
-          return { ...hero, found: false };
-        })
-      );
       setCurrentSearchImageURL("");
     }
   }, [heroes]);
