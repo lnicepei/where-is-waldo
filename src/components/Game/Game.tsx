@@ -66,8 +66,6 @@ const Game = () => {
     { name: string; position: string }[]
   >([]);
 
-  //FIXME: you can't play the same game twice
-
   // initialize firebase storage and get the coordinates from there
   //  by the name of the image
   const app = firebase.initializeApp(firebaseConfig);
@@ -89,6 +87,12 @@ const Game = () => {
           return { ...hero, found: false };
         })
       );
+      // FIXME: here can also be a solution
+      // setHeroes(
+      //   searchImages[0].heroes.map((hero) => {
+      //     return { ...hero, found: false };
+      //   })
+      // );
       setCurrentSearchImageURL("");
     }
   }, [heroes]);
