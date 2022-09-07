@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 interface CrosshairProps {
-  coordinateX: number;
-  coordinateY: number;
+  crosshairCoordinateX: number;
+  crosshairCoordinateY: number;
   windowWidth: number;
   windowHeight: number;
 }
@@ -13,8 +13,8 @@ export const StyledCrosshair = styled.div<CrosshairProps>`
   position: absolute;
   background-color: transparent;
   box-sizing: border-box;
-  left: ${(props) => (props.coordinateX / props.windowWidth) * 100}%;
-  top: ${(props) => (props.coordinateY / props.windowHeight) * 100}%;
+  left: ${(props) => (props.crosshairCoordinateX / props.windowWidth) * 100}%;
+  top: ${(props) => (props.crosshairCoordinateY / props.windowHeight) * 100}%;
 `;
 
 export const StyledOptions = styled.div`
