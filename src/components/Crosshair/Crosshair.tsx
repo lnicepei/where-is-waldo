@@ -7,6 +7,7 @@ interface CrosshairProps {
   crosshairCoordinateX: number;
   crosshairCoordinateY: number;
   wasClicked: boolean;
+  reference: React.RefObject<HTMLImageElement>;
   setWasClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -23,16 +24,22 @@ const Crosshair: React.FC<CrosshairProps> = (props) => {
   // -> mark found character as found
   const handleChoiceClick = (name: string) => {
     rightCoordinates?.forEach((character) => {
-      if (character[name as keyof Character]) {
+      if (character[name as keyof Character] && props.reference.current) {
         if (
           +character[name as keyof Character].split(" ")[0] <
-            (props.crosshairCoordinateX / window.innerWidth) * 100 &&
+            (props.crosshairCoordinateX / props.reference.current.clientWidth) *
+              100 &&
           +character[name as keyof Character].split(" ")[1] <
-            (props.crosshairCoordinateY / window.innerHeight) * 100 &&
+            (props.crosshairCoordinateY /
+              props.reference.current.clientHeight) *
+              100 &&
           +character[name as keyof Character].split(" ")[2] >
-            (props.crosshairCoordinateX / window.innerWidth) * 100 &&
+            (props.crosshairCoordinateX / props.reference.current.clientWidth) *
+              100 &&
           +character[name as keyof Character].split(" ")[3] >
-            (props.crosshairCoordinateY / window.innerHeight) * 100
+            (props.crosshairCoordinateY /
+              props.reference.current.clientHeight) *
+              100
         ) {
           setHeroes((prevHeroes) => {
             return prevHeroes.map((hero) => {
