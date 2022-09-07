@@ -4,8 +4,9 @@ import { StyledCrosshair, StyledOptions } from "./Crosshair.style";
 import CrosshairButton from "./CrosshairButton/CrosshairButton";
 
 interface CrosshairProps {
-  coordinateX: number;
-  coordinateY: number;
+  crosshairCoordinateX: number;
+  crosshairCoordinateY: number;
+  wasClicked: boolean;
   setWasClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -25,13 +26,13 @@ const Crosshair: React.FC<CrosshairProps> = (props) => {
       if (character[name as keyof Character]) {
         if (
           +character[name as keyof Character].split(" ")[0] <
-            (props.coordinateX / window.innerWidth) * 100 &&
+            (props.crosshairCoordinateX / window.innerWidth) * 100 &&
           +character[name as keyof Character].split(" ")[1] <
-            (props.coordinateY / window.innerHeight) * 100 &&
+            (props.crosshairCoordinateY / window.innerHeight) * 100 &&
           +character[name as keyof Character].split(" ")[2] >
-            (props.coordinateX / window.innerWidth) * 100 &&
+            (props.crosshairCoordinateX / window.innerWidth) * 100 &&
           +character[name as keyof Character].split(" ")[3] >
-            (props.coordinateY / window.innerHeight) * 100
+            (props.crosshairCoordinateY / window.innerHeight) * 100
         ) {
           setHeroes((prevHeroes) => {
             return prevHeroes.map((hero) => {
@@ -48,25 +49,29 @@ const Crosshair: React.FC<CrosshairProps> = (props) => {
   };
 
   return (
-    <StyledCrosshair
-      coordinateX={props.coordinateX}
-      coordinateY={props.coordinateY}
-      windowWidth={window.innerWidth}
-      windowHeight={window.innerHeight}
-    >
-      <StyledOptions>
-        {heroes.map((hero) => {
-          return (
-            <CrosshairButton
-              name={hero.name}
-              found={hero.found}
-              handleChoiceClick={handleChoiceClick}
-              key={hero.name}
-            />
-          );
-        })}
-      </StyledOptions>
-    </StyledCrosshair>
+    <>
+      {props.wasClicked && (
+        <StyledCrosshair
+          crosshairCoordinateX={props.crosshairCoordinateX}
+          crosshairCoordinateY={props.crosshairCoordinateY}
+          windowWidth={window.innerWidth}
+          windowHeight={window.innerHeight}
+        >
+          <StyledOptions>
+            {heroes.map((hero) => {
+              return (
+                <CrosshairButton
+                  name={hero.name}
+                  found={hero.found}
+                  handleChoiceClick={handleChoiceClick}
+                  key={hero.name}
+                />
+              );
+            })}
+          </StyledOptions>
+        </StyledCrosshair>
+      )}
+    </>
   );
 };
 
