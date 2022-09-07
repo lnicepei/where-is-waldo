@@ -78,26 +78,7 @@ const Game = () => {
     setRightCoordinates(position);
   }, [position]);
 
-  // if all heroes were found -> restart the game and
-  // clear current image url
-  useEffect(() => {
-    if (heroes.every((hero) => hero.found == true)) {
-      setHeroes((prevHeroes) =>
-        prevHeroes.map((hero) => {
-          return { ...hero, found: false };
-        })
-      );
-      // FIXME: here can also be a solution
-      // setHeroes(
-      //   searchImages[0].heroes.map((hero) => {
-      //     return { ...hero, found: false };
-      //   })
-      // );
-      setCurrentSearchImageURL("");
-    }
-  }, [heroes]);
-
-  console.log("app component rerendered");
+  console.log("game component rerendered");
 
   return (
     <div className="Game">
