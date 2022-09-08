@@ -1,6 +1,12 @@
-import React, { useContext } from "react";
-import { AppContext, HeroInterface } from "../../Game/Game";
+import React from "react";
+import { useDispatch } from "react-redux";
+import { HeroInterface } from "../../Game/Game";
+import { setHeroes } from "../../Game/GameSlice";
 import { StyledChooseCard, StyledChooseImage } from "../SearchImage.style";
+import {
+  setCurrentSearchImage,
+  setCurrentSearchImageURL,
+} from "../SearchImageSlice";
 
 interface SearchImageChoiceCardProps {
   url: string;
@@ -9,17 +15,18 @@ interface SearchImageChoiceCardProps {
 }
 
 const SearchImageChoiceCard: React.FC<SearchImageChoiceCardProps> = (props) => {
-  const { setCurrentSearchImageURL, setHeroes, setCurrentSearchImage } =
-    useContext(AppContext);
+  const dispatch = useDispatch();
 
   const handleChoiceClick = () => {
-    setHeroes(
-      props.heroes.map((hero) => {
-        return { ...hero, found: false };
-      })
+    dispatch(
+      setHeroes(
+        props.heroes.map((hero) => {
+          return { ...hero, found: false };
+        })
+      )
     );
-    setCurrentSearchImage(props.name);
-    setCurrentSearchImageURL(props.url);
+    dispatch(setCurrentSearchImage(props.name));
+    dispatch(setCurrentSearchImageURL(props.url));
   };
 
   return (
