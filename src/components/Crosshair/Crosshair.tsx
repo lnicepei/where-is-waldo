@@ -1,5 +1,8 @@
-import React, { useContext } from "react";
-import { AppContext } from "../Game/Game";
+import { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { HeroInterface } from "../Game/Game";
+import { setHeroes } from "../Game/GameSlice";
 import { StyledCrosshair, StyledOptions } from "./Crosshair.style";
 import CrosshairButton from "./CrosshairButton/CrosshairButton";
 
@@ -8,7 +11,7 @@ interface CrosshairProps {
   crosshairCoordinateY: number;
   wasClicked: boolean;
   reference: React.RefObject<HTMLImageElement>;
-  setWasClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  setWasClicked: ActionCreatorWithoutPayload<string>;
 }
 
 interface Character {
@@ -17,13 +20,18 @@ interface Character {
 }
 
 const Crosshair: React.FC<CrosshairProps> = (props) => {
-  const { heroes, setHeroes, rightCoordinates } = useContext(AppContext);
+  const dispatch = useDispatch();
 
-  // if the difference between click coordinates and
-  // the coordinates of characters is less than 1% Ox and 2.5% Oy
+  const heroes = useSelector((state) => state.heroes.value);
+
+  const rightCoordinates = useSelector(
+    (state) => state.currentSearchImage.rightCoordinates
+  );
+
+  // if click coordinates are within the area
   // -> mark found character as found
   const handleChoiceClick = (name: string) => {
-    rightCoordinates?.forEach((character) => {
+    rightCoordinates.forEach((character: Character) => {
       if (character[name as keyof Character] && props.reference.current) {
         if (
           +character[name as keyof Character].split(" ")[0] <
@@ -41,21 +49,21 @@ const Crosshair: React.FC<CrosshairProps> = (props) => {
               props.reference.current.clientHeight) *
               100
         ) {
-          setHeroes((prevHeroes) => {
-            return prevHeroes.map((hero) => {
-              if (hero.name == name) {
-                hero.found = true;
-              }
-              return hero;
-            });
-          });
+          dispatch(
+            setHeroes(
+              heroes.map((hero: HeroInterface) => {
+                if (hero.name == name) {
+                  return { ...hero, found: true };
+                }
+                return hero;
+              })
+            )
+          );
         }
       }
     });
-    props.setWasClicked((prevWasClicked) => !prevWasClicked);
+    dispatch(props.setWasClicked());
   };
-
-  console.log("hello world")
 
   return (
     <>
@@ -67,7 +75,7 @@ const Crosshair: React.FC<CrosshairProps> = (props) => {
           windowHeight={window.innerHeight}
         >
           <StyledOptions>
-            {heroes.map((hero) => {
+            {heroes.map((hero: HeroInterface) => {
               return (
                 <CrosshairButton
                   name={hero.name}
