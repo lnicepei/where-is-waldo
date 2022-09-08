@@ -55,6 +55,8 @@ const Crosshair: React.FC<CrosshairProps> = (props) => {
     props.setWasClicked((prevWasClicked) => !prevWasClicked);
   };
 
+  console.log("hello world")
+
   return (
     <>
       {props.wasClicked && (
