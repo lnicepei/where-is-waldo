@@ -1,17 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
+import searchImages from "../SearchImage/SearchImages";
 
 export const stateSlice = createSlice({
   name: "heroes",
   initialState: {
-    value: { name: "", found: false, image: "" },
+    value: searchImages[0].heroes,
   },
   reducers: {
-    getHeroes: (state, action) => {
+    setHeroes: (state, action) => {
       state.value = action.payload;
     },
   },
 });
 
-export const { getHeroes } = stateSlice.actions;
+export const { setHeroes } = stateSlice.actions;
 
 export default stateSlice.reducer;

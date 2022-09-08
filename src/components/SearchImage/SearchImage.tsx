@@ -1,21 +1,72 @@
-import React, { useRef, useContext, useState, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
+
 import {
   StyledSearchContainer,
   StyledSearchImage,
   StyledSearchImageChoiceMenu,
   StyledSearchImageContainer,
 } from "./SearchImage.style";
-import { AppContext } from "../Game/Game";
+
 import Crosshair from "../Crosshair/Crosshair";
 
-const SearchImage = () => {
-  const imageRef = useRef<HTMLImageElement>(null);
-  const { currentSearchImageURL, heroes, setCurrentSearchImageURL } =
-    useContext(AppContext);
+import firebase from "firebase/compat/app";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
-  const [crosshairCoordinateX, setCrosshairCoordinateX] = useState(0);
-  const [crosshairCoordinateY, setCrosshairCoordinateY] = useState(0);
-  const [wasClicked, setWasClicked] = useState(false);
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+import "firebase/compat/app";
+
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setRightCoordinates,
+  setWasClicked,
+  setCurrentSearchImageURL,
+  setCrosshairCoordinateX,
+  setCrosshairCoordinateY,
+} from "./SearchImageSlice";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBty4ic-Qsr_wyXC_CK2XHAnxve7jE1Ysw",
+  authDomain: "where-is-waldo-bee31.firebaseapp.com",
+  projectId: "where-is-waldo-bee31",
+  storageBucket: "where-is-waldo-bee31.appspot.com",
+  messagingSenderId: "750759008904",
+  appId: "1:750759008904:web:3ddab790d89d56c29e9d3d",
+};
+
+const SearchImage = () => {
+  const currentSearchImage = useSelector(
+    (state) => state.currentSearchImage.searchImage
+  );
+  const wasClicked = useSelector(
+    (state) => state.currentSearchImage.wasClicked
+  );
+  const currentSearchImageURL = useSelector(
+    (state) => state.currentSearchImage.currentSearchImageURL
+  );
+
+  const app = firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth(app);
+  const db = firebase.firestore(app);
+  const positionRef = db.collection(currentSearchImage);
+  const [position] = useCollectionData(positionRef, { idField: "id" });
+
+  useEffect(() => {
+    dispatch(setRightCoordinates(position));
+  }, [position]);
+
+  const dispatch = useDispatch();
+
+  const imageRef = useRef<HTMLImageElement>(null);
+
+  const heroes = useSelector((state) => state.heroes.value);
+
+  const crosshairCoordinateX = useSelector(
+    (state) => state.currentSearchImage.crosshairCoordinateX
+  );
+  const crosshairCoordinateY = useSelector(
+    (state) => state.currentSearchImage.crosshairCoordinateY
+  );
 
   // sets the coordinates of crosshair to clicked position
   // and hides it after the following click
@@ -23,16 +74,16 @@ const SearchImage = () => {
     e: React.MouseEvent<HTMLDivElement>
   ): void => {
     if (imageRef.current == e.target) {
-      setCrosshairCoordinateX(e.pageX);
-      setCrosshairCoordinateY(e.pageY);
-      setWasClicked((prevWasClicked) => !prevWasClicked);
+      dispatch(setCrosshairCoordinateX(e.pageX));
+      dispatch(setCrosshairCoordinateY(e.pageY));
+      dispatch(setWasClicked());
     }
   };
 
   // if all heroes were found -> reset current image url
   useEffect(() => {
     if (heroes.every((hero) => hero.found == true)) {
-      setCurrentSearchImageURL("");
+      dispatch(setCurrentSearchImageURL(""));
     }
   }, [heroes]);
 
