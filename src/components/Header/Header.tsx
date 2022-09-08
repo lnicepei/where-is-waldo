@@ -1,31 +1,33 @@
-import React, { useContext } from "react";
+import React from "react";
 
-import { AppContext } from "../Game/Game";
+import { HeroInterface } from "../Game/Game";
 import { StyledHeader, StyledHero } from "./Header.style";
 
-import { useSelector, useDispatch } from "react-redux";
-import { getHeroes } from "../Game/SearchImage";
+import { useSelector } from "react-redux";
 
 const Header = () => {
-  const { heroes } = useContext(AppContext);
+  const heroes = useSelector((state) => state.heroes.value);
+  const currentSearchImageURL = useSelector(
+    (state) => state.currentSearchImage.currentSearchImageURL
+  );
 
-  // const hero = useSelector((state) => state.hero.value);
-
-  // const dispatch = useDispatch();
-  // console.log(hero.name, hero.found, hero.image);
   return (
-    <StyledHeader>
-      {heroes.map((hero) => {
-        return (
-          <StyledHero
-            name={hero.name}
-            image={hero.image}
-            found={hero.found}
-            key={hero.name}
-          />
-        );
-      })}
-    </StyledHeader>
+    <>
+      {currentSearchImageURL && (
+        <StyledHeader>
+          {heroes.map((hero: HeroInterface) => {
+            return (
+              <StyledHero
+                name={hero.name}
+                image={hero.image}
+                found={hero.found}
+                key={hero.name}
+              />
+            );
+          })}
+        </StyledHeader>
+      )}
+    </>
   );
 };
 
