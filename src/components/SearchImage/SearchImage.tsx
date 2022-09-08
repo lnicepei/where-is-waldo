@@ -16,7 +16,6 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import "firebase/compat/app";
 
-import { useDispatch, useSelector } from "react-redux";
 import {
   setRightCoordinates,
   setWasClicked,
@@ -24,6 +23,8 @@ import {
   setCrosshairCoordinateX,
   setCrosshairCoordinateY,
 } from "./SearchImageSlice";
+import { HeroInterface } from "../Header/Hero/Hero";
+import { useAppDispatch, useAppSelector } from "../../App/hooks";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBty4ic-Qsr_wyXC_CK2XHAnxve7jE1Ysw",
@@ -35,13 +36,13 @@ const firebaseConfig = {
 };
 
 const SearchImage = () => {
-  const currentSearchImage = useSelector(
+  const currentSearchImage = useAppSelector(
     (state) => state.currentSearchImage.searchImage
   );
-  const wasClicked = useSelector(
+  const wasClicked = useAppSelector(
     (state) => state.currentSearchImage.wasClicked
   );
-  const currentSearchImageURL = useSelector(
+  const currentSearchImageURL = useAppSelector(
     (state) => state.currentSearchImage.currentSearchImageURL
   );
 
@@ -55,16 +56,16 @@ const SearchImage = () => {
     dispatch(setRightCoordinates(position));
   }, [position]);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const imageRef = useRef<HTMLImageElement>(null);
 
-  const heroes = useSelector((state) => state.heroes.value);
+  const heroes = useAppSelector((state) => state.heroes.value);
 
-  const crosshairCoordinateX = useSelector(
+  const crosshairCoordinateX = useAppSelector(
     (state) => state.currentSearchImage.crosshairCoordinateX
   );
-  const crosshairCoordinateY = useSelector(
+  const crosshairCoordinateY = useAppSelector(
     (state) => state.currentSearchImage.crosshairCoordinateY
   );
 
@@ -82,12 +83,10 @@ const SearchImage = () => {
 
   // if all heroes were found -> reset current image url
   useEffect(() => {
-    if (heroes.every((hero) => hero.found == true)) {
+    if (heroes.every((hero: HeroInterface) => hero.found == true)) {
       dispatch(setCurrentSearchImageURL(""));
     }
   }, [heroes]);
-
-  console.log("SearchImage component rendered");
 
   return (
     <StyledSearchImageContainer>

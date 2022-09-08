@@ -12,6 +12,7 @@
   "dependencies": {
     "@google-cloud/firestore": "^6.0.0",
     "@reduxjs/toolkit": "^1.8.5",
+    "@types/react-redux": "^7.1.24",
     "firebase": "^9.9.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -1,13 +1,13 @@
 import React from "react";
 
-interface HeroProps {
+export interface HeroInterface {
   name: string;
   image: string;
   found: boolean;
   className?: string;
 }
 
-const Hero: React.FC<HeroProps> = (props) => {
+const Hero: React.FC<HeroInterface> = (props) => {
   return (
     <div className={props.className}>
       <h2>{props.name}</h2>

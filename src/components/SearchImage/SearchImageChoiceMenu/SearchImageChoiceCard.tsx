@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { HeroInterface } from "../../Game/Game";
+import { HeroInterface } from "../../Header/Hero/Hero";
 import { setHeroes } from "../../Game/GameSlice";
 import { StyledChooseCard, StyledChooseImage } from "../SearchImage.style";
 import {

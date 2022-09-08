@@ -1,13 +1,13 @@
 import React from "react";
 
-import { HeroInterface } from "../Game/Game";
+import { HeroInterface } from "../Header/Hero/Hero";
 import { StyledHeader, StyledHero } from "./Header.style";
 
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../App/hooks";
 
 const Header = () => {
-  const heroes = useSelector((state) => state.heroes.value);
-  const currentSearchImageURL = useSelector(
+  const heroes = useAppSelector((state) => state.heroes.value);
+  const currentSearchImageURL = useAppSelector(
     (state) => state.currentSearchImage.currentSearchImageURL
   );
 

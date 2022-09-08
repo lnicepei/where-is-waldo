@@ -1,7 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { HeroInterface } from "../Header/Hero/Hero";
 import searchImages from "./SearchImages";
 
-const initialState = {
+interface InitialState {
+  value: HeroInterface[];
+  wasClicked: boolean;
+  searchImage: string;
+  currentSearchImageURL: string;
+  rightCoordinates: [];
+  crosshairCoordinateX: number;
+  crosshairCoordinateY: number;
+}
+
+const initialState: InitialState = {
+  value: [],
   wasClicked: false,
   searchImage: searchImages[0].name,
   currentSearchImageURL: "",
@@ -18,23 +30,23 @@ export const SearchImageSlice = createSlice({
       state.wasClicked = !state.wasClicked;
     },
 
-    setCurrentSearchImage: (state, action) => {
+    setCurrentSearchImage: (state, action: PayloadAction<string>) => {
       state.searchImage = action.payload;
     },
 
-    setRightCoordinates: (state, action) => {
+    setRightCoordinates: (state, action: PayloadAction<[]>) => {
       state.rightCoordinates = action.payload;
     },
 
-    setCurrentSearchImageURL: (state, action) => {
+    setCurrentSearchImageURL: (state, action: PayloadAction<string>) => {
       state.currentSearchImageURL = action.payload;
     },
 
-    setCrosshairCoordinateX: (state, action) => {
+    setCrosshairCoordinateX: (state, action: PayloadAction<number>) => {
       state.crosshairCoordinateX = action.payload;
     },
 
-    setCrosshairCoordinateY: (state, action) => {
+    setCrosshairCoordinateY: (state, action: PayloadAction<number>) => {
       state.crosshairCoordinateY = action.payload;
     },
   },

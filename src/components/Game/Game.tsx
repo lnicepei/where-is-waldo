@@ -5,35 +5,24 @@ import Header from "../Header/Header";
 
 import { StyledGame } from "./Game.styles";
 
-import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 
-import heroesReducer from "./GameSlice";
-import SearchImageReducer from "../SearchImage/SearchImageSlice";
+import store from "../store/store";
 
-export interface HeroInterface {
-  name: string;
-  found: boolean;
-  image: string;
-}
+// export interface HeroInterface {
+//   name: string;
+//   found: boolean;
+//   image: string;
+// }
 
 const Game = () => {
-  const store = configureStore({
-    reducer: {
-      currentSearchImage: SearchImageReducer,
-      heroes: heroesReducer,
-    },
-  });
-
-  console.log("game component rendered");
-
   return (
-    <StyledGame>
+    <div>
       <Provider store={store}>
         <Header />
         <SearchImage />
       </Provider>
-    </StyledGame>
+    </div>
   );
 };
 
