@@ -1,6 +1,6 @@
 import { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../App/hooks";
 import { HeroInterface } from "../Game/Game";
 import { setHeroes } from "../Game/GameSlice";
 import { StyledCrosshair, StyledOptions } from "./Crosshair.style";
@@ -14,17 +14,17 @@ interface CrosshairProps {
   setWasClicked: ActionCreatorWithoutPayload<string>;
 }
 
-interface Character {
+export interface Character {
   name: string;
   position: string;
 }
 
 const Crosshair: React.FC<CrosshairProps> = (props) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const heroes = useSelector((state) => state.heroes.value);
+  const heroes = useAppSelector((state) => state.heroes.value);
 
-  const rightCoordinates = useSelector(
+  const rightCoordinates = useAppSelector(
     (state) => state.currentSearchImage.rightCoordinates
   );
 
