@@ -1,12 +1,14 @@
 import React from "react";
-import { useAppDispatch } from "../../../App/hooks";
-import { HeroInterface } from "../../Header/Hero/Hero";
-import { setHeroes } from "../../Game/GameSlice";
 import { StyledChooseCard, StyledChooseImage } from "../SearchImage.style";
+
 import {
   setCurrentSearchImage,
   setCurrentSearchImageURL,
 } from "../SearchImageSlice";
+import { setIsCounting, setTime } from "../../../Timer/TimerSlice";
+import { useAppDispatch } from "../../../App/hooks";
+import { HeroInterface } from "../../Header/Hero/Hero";
+import { setHeroes } from "../../Game/GameSlice";
 
 interface SearchImageChoiceCardProps {
   url: string;
@@ -25,6 +27,8 @@ const SearchImageChoiceCard: React.FC<SearchImageChoiceCardProps> = (props) => {
         })
       )
     );
+    dispatch(setIsCounting(true));
+    dispatch(setTime(0));
     dispatch(setCurrentSearchImage(props.name));
     dispatch(setCurrentSearchImageURL(props.url));
   };
