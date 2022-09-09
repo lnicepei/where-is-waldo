@@ -1,11 +1,10 @@
-import { useState, useEffect, createContext } from "react";
 import "./App.css";
-import Game from "../components/Game/Game";
+import { StyledGame } from "../components/Game/Game.styles";
 
 function App() {
   return (
     <div className="App">
-      <Game />
+      <StyledGame />
     </div>
   );
 }
