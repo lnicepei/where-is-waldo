@@ -8,7 +8,7 @@ interface InitialState {
   wasClicked: boolean;
   searchImage: string;
   currentSearchImageURL: string;
-  rightCoordinates: [];
+  rightCoordinates: { id: string }[];
   crosshairCoordinateX: number;
   crosshairCoordinateY: number;
 }
@@ -35,7 +35,7 @@ export const SearchImageSlice = createSlice({
       state.searchImage = action.payload;
     },
 
-    setRightCoordinates: (state, action: PayloadAction<[]>) => {
+    setRightCoordinates: (state, action: PayloadAction<{ id: string }[]>) => {
       state.rightCoordinates = action.payload;
     },
 
