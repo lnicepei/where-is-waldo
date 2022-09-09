@@ -1,5 +1,4 @@
 import React from "react";
-// import { useAppDispatch } from "react-redux";
 import { useAppDispatch } from "../../../App/hooks";
 import { HeroInterface } from "../../Header/Hero/Hero";
 import { setHeroes } from "../../Game/GameSlice";

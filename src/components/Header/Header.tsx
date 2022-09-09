@@ -1,6 +1,6 @@
 import React from "react";
 
-import { HeroInterface } from "../Game/Game";
+import { HeroInterface } from "../Header/Hero/Hero";
 import { StyledHeader, StyledHero } from "./Header.style";
 
 import { useAppSelector } from "../../App/hooks";

@@ -8,6 +8,7 @@ interface CrosshairButtonProps {
 }
 
 const CrosshairButton: React.FC<CrosshairButtonProps> = (props) => {
+  console.log("click");
   return (
     <>
       {!props.found && (

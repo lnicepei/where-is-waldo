@@ -23,6 +23,7 @@ import {
   setCrosshairCoordinateX,
   setCrosshairCoordinateY,
 } from "./SearchImageSlice";
+import { HeroInterface } from "../Header/Hero/Hero";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
 
 const firebaseConfig = {
@@ -82,12 +83,10 @@ const SearchImage = () => {
 
   // if all heroes were found -> reset current image url
   useEffect(() => {
-    if (heroes.every((hero) => hero.found == true)) {
+    if (heroes.every((hero: HeroInterface) => hero.found == true)) {
       dispatch(setCurrentSearchImageURL(""));
     }
   }, [heroes]);
-
-  console.log("SearchImage component rendered");
 
   return (
     <StyledSearchImageContainer>
