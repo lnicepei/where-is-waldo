@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../../App/hooks";
 import { HeroInterface } from "../../Header/Hero/Hero";
 import { setHeroes } from "../../Game/GameSlice";
 import { StyledChooseCard, StyledChooseImage } from "../SearchImage.style";
@@ -15,7 +15,7 @@ interface SearchImageChoiceCardProps {
 }
 
 const SearchImageChoiceCard: React.FC<SearchImageChoiceCardProps> = (props) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleChoiceClick = () => {
     dispatch(

@@ -14,7 +14,7 @@ interface CrosshairProps {
   setWasClicked: ActionCreatorWithoutPayload<string>;
 }
 
-interface Character {
+export interface Character {
   name: string;
   position: string;
 }

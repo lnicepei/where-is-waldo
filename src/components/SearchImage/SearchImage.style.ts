@@ -12,11 +12,7 @@ export const StyledSearchContainer = styled.div`
 
 export const StyledSearchImageChoiceMenu = styled(SearchImageChoiceMenu)`
   display: flex;
-  flex-direction: column;
-  background-color: red;
-  width: 50px;
-  height: 50px;
-  margin-top: 200px;
+  flex-direction: row;
 `;
 
 export const StyledSearchImageContainer = styled.div`

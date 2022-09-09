@@ -1,23 +1,14 @@
 import React from "react";
+import { Provider } from "react-redux";
 
 import SearchImage from "../SearchImage/SearchImage";
 import Header from "../Header/Header";
 
-import { StyledGame } from "./Game.styles";
+import { store } from "../../store";
 
-import { Provider } from "react-redux";
-
-import store from "../store/store";
-
-// export interface HeroInterface {
-//   name: string;
-//   found: boolean;
-//   image: string;
-// }
-
-const Game = () => {
+const Game: React.FC = () => {
   return (
-    <div>
+    <div className="Game">
       <Provider store={store}>
         <Header />
         <SearchImage />

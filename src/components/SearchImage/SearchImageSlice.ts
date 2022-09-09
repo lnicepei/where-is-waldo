@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { HeroInterface } from "../Header/Hero/Hero";
 import searchImages from "./SearchImages";
+import { Character } from "../Crosshair/Crosshair";
 
 interface InitialState {
   value: HeroInterface[];
