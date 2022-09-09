@@ -16,7 +16,7 @@ export const StyledHeader = styled.header`
   padding: 10px;
   justify-content: center;
   color: white;
-  backdrop-filter: blur(10px);
+  /* backdrop-filter: blur(10px); */
   user-select: none;
   background-color: rgba(41, 59, 72, 0.3);
   z-index: 2;
@@ -38,11 +38,6 @@ export const StyledHero = styled(Hero)<Props>`
   height: 100px;
   width: 100%;
   opacity: ${(props) => (props.found ? 0.3 : 1)};
-/* 
-   img {
-  }
-
-  h2{
-
-  } */
 `;
+
+
