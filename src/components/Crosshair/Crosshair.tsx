@@ -1,10 +1,14 @@
-import { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
 import React from "react";
+import { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
+
 import { HeroInterface } from "../Header/Hero/Hero";
 import { setHeroes } from "../Game/GameSlice";
+
 import { StyledCrosshair, StyledOptions } from "./Crosshair.style";
-import CrosshairButton from "./CrosshairButton/CrosshairButton";
+
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
+
+import CrosshairButton from "./CrosshairButton/CrosshairButton";
 
 interface CrosshairProps {
   crosshairCoordinateX: number;
@@ -15,8 +19,7 @@ interface CrosshairProps {
 }
 
 export interface Character {
-  name: string;
-  position: string;
+  id: string;
 }
 
 const Crosshair: React.FC<CrosshairProps> = (props) => {
