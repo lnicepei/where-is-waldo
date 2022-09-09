@@ -1,7 +1,7 @@
 import { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
-import { HeroInterface } from "../Game/Game";
+import { HeroInterface } from "../Header/Hero/Hero";
 import { setHeroes } from "../Game/GameSlice";
 import { StyledCrosshair, StyledOptions } from "./Crosshair.style";
 import CrosshairButton from "./CrosshairButton/CrosshairButton";
