@@ -1,20 +1,14 @@
 import React, { useRef, useEffect } from "react";
 
-import {
-  StyledSearchContainer,
-  StyledSearchImage,
-  StyledSearchImageChoiceMenu,
-  StyledSearchImageContainer,
-} from "./SearchImage.style";
-
 import Crosshair from "../Crosshair/Crosshair";
 
+import { getDocs } from "firebase/firestore";
 import firebase from "firebase/compat/app";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-
-import "firebase/compat/auth";
 import "firebase/compat/firestore";
-import "firebase/compat/app";
+
+import { HeroInterface } from "../Header/Hero/Hero";
+import { useAppDispatch, useAppSelector } from "../../App/hooks";
+import { setIsCounting } from "../../Timer/TimerSlice";
 
 import {
   setRightCoordinates,
@@ -23,8 +17,13 @@ import {
   setCrosshairCoordinateX,
   setCrosshairCoordinateY,
 } from "./SearchImageSlice";
-import { HeroInterface } from "../Header/Hero/Hero";
-import { useAppDispatch, useAppSelector } from "../../App/hooks";
+
+import {
+  StyledSearchContainer,
+  StyledSearchImage,
+  StyledSearchImageChoiceMenu,
+  StyledSearchImageContainer,
+} from "./SearchImage.style";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBty4ic-Qsr_wyXC_CK2XHAnxve7jE1Ysw",
@@ -50,11 +49,17 @@ const SearchImage = () => {
   const auth = firebase.auth(app);
   const db = firebase.firestore(app);
   const positionRef = db.collection(currentSearchImage);
-  const [position] = useCollectionData(positionRef, { idField: "id" });
 
   useEffect(() => {
-    dispatch(setRightCoordinates(position));
-  }, [position]);
+    (async () => {
+      const data = await getDocs(positionRef);
+      dispatch(
+        setRightCoordinates(
+          data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        )
+      );
+    })();
+  }, []);
 
   const dispatch = useAppDispatch();
 
@@ -85,6 +90,7 @@ const SearchImage = () => {
   useEffect(() => {
     if (heroes.every((hero: HeroInterface) => hero.found == true)) {
       dispatch(setCurrentSearchImageURL(""));
+      dispatch(setIsCounting(false));
     }
   }, [heroes]);
 
