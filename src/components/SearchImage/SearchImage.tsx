@@ -35,18 +35,31 @@ const firebaseConfig = {
 };
 
 const SearchImage = () => {
+  const dispatch = useAppDispatch();
+
+  const heroes = useAppSelector((state) => state.heroes.value);
+
   const currentSearchImage = useAppSelector(
     (state) => state.currentSearchImage.searchImage
   );
+
   const wasClicked = useAppSelector(
     (state) => state.currentSearchImage.wasClicked
   );
+
   const currentSearchImageURL = useAppSelector(
     (state) => state.currentSearchImage.currentSearchImageURL
   );
 
+  const crosshairCoordinateX = useAppSelector(
+    (state) => state.currentSearchImage.crosshairCoordinateX
+  );
+
+  const crosshairCoordinateY = useAppSelector(
+    (state) => state.currentSearchImage.crosshairCoordinateY
+  );
+
   const app = firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth(app);
   const db = firebase.firestore(app);
   const positionRef = db.collection(currentSearchImage);
 
@@ -61,18 +74,7 @@ const SearchImage = () => {
     })();
   }, []);
 
-  const dispatch = useAppDispatch();
-
   const imageRef = useRef<HTMLImageElement>(null);
-
-  const heroes = useAppSelector((state) => state.heroes.value);
-
-  const crosshairCoordinateX = useAppSelector(
-    (state) => state.currentSearchImage.crosshairCoordinateX
-  );
-  const crosshairCoordinateY = useAppSelector(
-    (state) => state.currentSearchImage.crosshairCoordinateY
-  );
 
   // sets the coordinates of crosshair to clicked position
   // and hides it after the following click
