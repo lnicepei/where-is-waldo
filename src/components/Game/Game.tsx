@@ -5,6 +5,7 @@ import SearchImage from "../SearchImage/SearchImage";
 import Header from "../Header/Header";
 
 import { store } from "../../store";
+import Leaderboard from "../Leaderboard/Leaderboard";
 
 const Game: React.FC = () => {
   return (
@@ -12,6 +13,7 @@ const Game: React.FC = () => {
       <Provider store={store}>
         <Header />
         <SearchImage />
+        <Leaderboard />
       </Provider>
     </div>
   );
