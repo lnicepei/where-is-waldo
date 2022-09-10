@@ -1,16 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { HeroInterface } from "../Header/Hero/Hero";
 import searchImages from "./SearchImages";
-import { Character } from "../Crosshair/Crosshair";
+import { User } from "../Leaderboard/Leaderboard";
 
 interface InitialState {
   value: HeroInterface[];
   wasClicked: boolean;
   searchImage: string;
   currentSearchImageURL: string;
-  rightCoordinates: { id: string }[];
+  rightCoordinates: User[];
   crosshairCoordinateX: number;
   crosshairCoordinateY: number;
+  leaderboardData: User[];
 }
 
 const initialState: InitialState = {
@@ -21,6 +22,7 @@ const initialState: InitialState = {
   rightCoordinates: [],
   crosshairCoordinateX: 0,
   crosshairCoordinateY: 0,
+  leaderboardData: [],
 };
 
 export const SearchImageSlice = createSlice({
@@ -35,7 +37,7 @@ export const SearchImageSlice = createSlice({
       state.searchImage = action.payload;
     },
 
-    setRightCoordinates: (state, action: PayloadAction<{ id: string }[]>) => {
+    setRightCoordinates: (state, action: PayloadAction<User[]>) => {
       state.rightCoordinates = action.payload;
     },
 
@@ -50,6 +52,10 @@ export const SearchImageSlice = createSlice({
     setCrosshairCoordinateY: (state, action: PayloadAction<number>) => {
       state.crosshairCoordinateY = action.payload;
     },
+
+    setLeaderboardData: (state, action: PayloadAction<User[]>) => {
+      state.leaderboardData = action.payload;
+    },
   },
 });
 
@@ -60,6 +66,7 @@ export const {
   setCurrentSearchImageURL,
   setCrosshairCoordinateX,
   setCrosshairCoordinateY,
+  setLeaderboardData
 } = SearchImageSlice.actions;
 
 export default SearchImageSlice.reducer;
