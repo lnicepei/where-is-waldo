@@ -10,7 +10,7 @@ const initialState: InitialState = {
   value: searchImages[0].heroes,
 };
 
-export const stateSlice = createSlice({
+export const heroesReducer = createSlice({
   name: "heroes",
   initialState: initialState,
   reducers: {
@@ -20,6 +20,6 @@ export const stateSlice = createSlice({
   },
 });
 
-export const { setHeroes } = stateSlice.actions;
+export const { setHeroes } = heroesReducer.actions;
 
-export default stateSlice.reducer;
+export default heroesReducer.reducer;
