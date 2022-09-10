@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 
 import Crosshair from "../Crosshair/Crosshair";
 
-import { getDocs } from "firebase/firestore";
+import { addDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 
@@ -16,6 +16,7 @@ import {
   setCurrentSearchImageURL,
   setCrosshairCoordinateX,
   setCrosshairCoordinateY,
+  setLeaderboardData,
 } from "./SearchImageSlice";
 
 import {
@@ -24,6 +25,7 @@ import {
   StyledSearchImageChoiceMenu,
   StyledSearchImageContainer,
 } from "./SearchImage.style";
+import FirebaseFirestore from "@google-cloud/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBty4ic-Qsr_wyXC_CK2XHAnxve7jE1Ysw",
@@ -59,22 +61,34 @@ const SearchImage = () => {
     (state) => state.currentSearchImage.crosshairCoordinateY
   );
 
+  const time = useAppSelector((state) => state.time.time);
+
+  const imageRef = useRef<HTMLImageElement>(null);
+
   const app = firebase.initializeApp(firebaseConfig);
+
   const db = firebase.firestore(app);
   const positionRef = db.collection(currentSearchImage);
+  const timeRef = db.collection("results");
 
   useEffect(() => {
     (async () => {
-      const data = await getDocs(positionRef);
+      const positionData = await getDocs(positionRef);
       dispatch(
         setRightCoordinates(
-          data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+          positionData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        )
+      );
+      const leaderboardData = await getDocs(
+        collection(timeRef, `${currentSearchImage}/players`)
+      );
+      dispatch(
+        setLeaderboardData(
+          leaderboardData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
         )
       );
     })();
-  }, []);
-
-  const imageRef = useRef<HTMLImageElement>(null);
+  }, [positionRef, timeRef]);
 
   // sets the coordinates of crosshair to clicked position
   // and hides it after the following click
@@ -88,9 +102,26 @@ const SearchImage = () => {
     }
   };
 
-  // if all heroes were found -> reset current image url
+  // if all heroes were found -> reset current image url and disable counting
   useEffect(() => {
     if (heroes.every((hero: HeroInterface) => hero.found == true)) {
+      const addDataToDatabase = async () => {
+        try {
+          await addDoc(
+            collection(timeRef, `${currentSearchImage}/${"players"}`),
+            {
+              name: prompt("Enter your name"),
+              time: time,
+            }
+          );
+        } catch (err) {
+          console.log(err);
+        }
+      };
+
+      addDataToDatabase();
+      //TODO: write info to database
+      // https://www.youtube.com/watch?v=jCY6DH8F4oc
       dispatch(setCurrentSearchImageURL(""));
       dispatch(setIsCounting(false));
     }
