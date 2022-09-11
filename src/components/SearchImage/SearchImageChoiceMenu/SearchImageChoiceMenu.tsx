@@ -1,4 +1,7 @@
 import React from "react";
+import { useAppDispatch } from "../../../App/hooks";
+import { setIsCounting, setTime } from "../../../Timer/TimerSlice";
+import { setHeroes } from "../../Game/GameSlice";
 import searchImages from "../SearchImages";
 import SearchImageChoiceCard from "./SearchImageChoiceCard";
 
@@ -7,6 +10,13 @@ interface SearchImageChoiceMenuProps {
 }
 
 const SearchImageChoiceMenu: React.FC<SearchImageChoiceMenuProps> = () => {
+  const dispatch = useAppDispatch();
+
+  const handleChoiceClick = () => {
+    dispatch(setIsCounting(true));
+    dispatch(setTime(new Date()));
+  };
+
   return (
     <>
       {searchImages.map((image) => {
@@ -19,6 +29,7 @@ const SearchImageChoiceMenu: React.FC<SearchImageChoiceMenuProps> = () => {
           />
         );
       })}
+      <button onClick={handleChoiceClick}>Play!</button>
     </>
   );
 };
