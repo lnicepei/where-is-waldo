@@ -1,10 +1,18 @@
 import "./App.css";
-import Game from "../components/Game/Game";
-// a check that branch works
+import { Provider } from "react-redux";
+import { store } from "../store";
+import Header from "../components/Header/Header";
+import SearchImage from "../components/SearchImage/SearchImage";
+import Leaderboard from "../components/Leaderboard/Leaderboard";
+
 function App() {
   return (
     <div className="App">
-      <Game />
+      <Provider store={store}>
+        <Header />
+        <SearchImage />
+        <Leaderboard />
+      </Provider>
     </div>
   );
 }
