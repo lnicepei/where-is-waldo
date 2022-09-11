@@ -14,7 +14,7 @@ import "firebase/compat/firestore";
 
 import { HeroInterface } from "../Header/Hero/Hero";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
-import { setIsCounting, setTime } from "../../Timer/TimerSlice";
+import { setIsCounting, setTime } from "../Timer/TimerSlice";
 
 import {
   setRightCoordinates,

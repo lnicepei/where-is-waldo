@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import heroesReducer from "../App/AppSlice";
-import timeReducer from "../Timer/TimerSlice";
+import timeReducer from "../components/Timer/TimerSlice";
 import searchImageReducer from "../components/SearchImage/SearchImageSlice";
 
 export const store = configureStore({

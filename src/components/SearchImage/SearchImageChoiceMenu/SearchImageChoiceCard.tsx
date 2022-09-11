@@ -5,7 +5,7 @@ import {
   setCurrentSearchImage,
   setCurrentSearchImageURL,
 } from "../SearchImageSlice";
-import { setIsCounting, setTime } from "../../../Timer/TimerSlice";
+import { setIsCounting, setTime } from "../../Timer/TimerSlice";
 import { useAppDispatch } from "../../../App/hooks";
 import { HeroInterface } from "../../Header/Hero/Hero";
 import { setHeroes } from "../../../App/AppSlice";

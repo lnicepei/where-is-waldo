@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppDispatch } from "../../../App/hooks";
-import { setIsCounting, setTime } from "../../../Timer/TimerSlice";
+import { setIsCounting, setTime } from "../../Timer/TimerSlice";
 import { setHeroes } from "../../../App/AppSlice";
 import searchImages from "../SearchImages";
 import SearchImageChoiceCard from "./SearchImageChoiceCard";
