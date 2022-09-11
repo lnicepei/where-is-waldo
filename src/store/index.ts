@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import heroesReducer from "../components/Game/GameSlice";
+import heroesReducer from "../App/AppSlice";
 import timeReducer from "../Timer/TimerSlice";
 import searchImageReducer from "../components/SearchImage/SearchImageSlice";
 
