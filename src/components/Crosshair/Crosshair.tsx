@@ -2,7 +2,7 @@ import React from "react";
 import { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
 
 import { HeroInterface } from "../Header/Hero/Hero";
-import { setHeroes } from "../Game/GameSlice";
+import { setHeroes } from "../../App/AppSlice";
 
 import { StyledCrosshair, StyledOptions } from "./Crosshair.style";
 

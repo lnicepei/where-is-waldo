@@ -8,7 +8,7 @@ import {
 import { setIsCounting, setTime } from "../../../Timer/TimerSlice";
 import { useAppDispatch } from "../../../App/hooks";
 import { HeroInterface } from "../../Header/Hero/Hero";
-import { setHeroes } from "../../Game/GameSlice";
+import { setHeroes } from "../../../App/AppSlice";
 
 interface SearchImageChoiceCardProps {
   url: string;
