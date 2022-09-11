@@ -2,13 +2,20 @@ import React, { useRef, useEffect } from "react";
 
 import Crosshair from "../Crosshair/Crosshair";
 
-import { addDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 
 import { HeroInterface } from "../Header/Hero/Hero";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
-import { setIsCounting } from "../../Timer/TimerSlice";
+import { setIsCounting, setTime } from "../../Timer/TimerSlice";
 
 import {
   setRightCoordinates,
@@ -25,7 +32,8 @@ import {
   StyledSearchImageChoiceMenu,
   StyledSearchImageContainer,
 } from "./SearchImage.style";
-import FirebaseFirestore from "@google-cloud/firestore";
+
+import { differenceInMilliseconds, format } from "date-fns";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBty4ic-Qsr_wyXC_CK2XHAnxve7jE1Ysw",
@@ -69,24 +77,31 @@ const SearchImage = () => {
 
   const db = firebase.firestore(app);
   const positionRef = db.collection(currentSearchImage);
-  const timeRef = db.collection("results");
+  const timeRef = db.collection("results").orderBy("desc");
+
+  // const q = query(timeRef, orderBy("time", "asc"), limit(10));
+  // console.log(q);
 
   useEffect(() => {
     (async () => {
-      const positionData = await getDocs(positionRef);
-      dispatch(
-        setRightCoordinates(
-          positionData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        )
-      );
-      const leaderboardData = await getDocs(
-        collection(timeRef, `${currentSearchImage}/players`)
-      );
-      dispatch(
-        setLeaderboardData(
-          leaderboardData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        )
-      );
+      try {
+        const positionData = await getDocs(positionRef);
+        dispatch(
+          setRightCoordinates(
+            positionData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+          )
+        );
+        const leaderboardData = await getDocs(
+          collection(timeRef, `${currentSearchImage}/players`)
+        );
+        dispatch(
+          setLeaderboardData(
+            leaderboardData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+          )
+        );
+      } catch (error) {
+        console.log(error);
+      }
     })();
   }, [positionRef, timeRef]);
 
@@ -110,8 +125,8 @@ const SearchImage = () => {
           await addDoc(
             collection(timeRef, `${currentSearchImage}/${"players"}`),
             {
+              time: differenceInMilliseconds(new Date(), time),
               name: prompt("Enter your name"),
-              time: time,
             }
           );
         } catch (err) {
