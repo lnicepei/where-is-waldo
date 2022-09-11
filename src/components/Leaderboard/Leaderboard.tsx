@@ -1,12 +1,11 @@
-import { format, millisecondsToMinutes } from "date-fns";
-import { millisecondsToSeconds } from "date-fns/esm";
-import React from "react";
+// import React from "react";
+import { format } from "date-fns";
 import { useAppSelector } from "../../App/hooks";
 
 export interface User {
-  id?: string;
-  name: string;
-  time: Date;
+  id: string;
+  name?: string;
+  time?: Date | number;
 }
 
 const Leaderboard = () => {
@@ -18,7 +17,7 @@ const Leaderboard = () => {
     <div>
       {leaderboardData.map((user) => (
         <div>
-          {user.name} : {format(user.time, "mm:ss:SS")}
+          {user.name} : {user.time ? format(user.time, "mm:ss:SS") : ""}
         </div>
       ))}
     </div>
