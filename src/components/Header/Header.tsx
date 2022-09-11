@@ -17,7 +17,7 @@ const Header = () => {
 
   return (
     <>
-      {currentSearchImageURL && (
+      {currentSearchImageURL && isCounting && (
         <StyledHeader>
           {heroes.map((hero: HeroInterface) => {
             return (
