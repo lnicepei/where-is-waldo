@@ -6,7 +6,6 @@ import {
   addDoc,
   collection,
   getDocs,
-  limit,
   orderBy,
   query,
 } from "firebase/firestore";
@@ -33,7 +32,7 @@ import {
   StyledSearchImageContainer,
 } from "./SearchImage.style";
 
-import { differenceInMilliseconds, format } from "date-fns";
+import { differenceInMilliseconds } from "date-fns";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBty4ic-Qsr_wyXC_CK2XHAnxve7jE1Ysw",
@@ -69,6 +68,8 @@ const SearchImage = () => {
     (state) => state.currentSearchImage.crosshairCoordinateY
   );
 
+  const isCounting = useAppSelector((state) => state.time.isCounting);
+
   const time = useAppSelector((state) => state.time.time);
 
   const imageRef = useRef<HTMLImageElement>(null);
@@ -76,11 +77,10 @@ const SearchImage = () => {
   const app = firebase.initializeApp(firebaseConfig);
 
   const db = firebase.firestore(app);
-  const positionRef = db.collection(currentSearchImage);
-  const timeRef = db.collection("results").orderBy("desc");
 
-  // const q = query(timeRef, orderBy("time", "asc"), limit(10));
-  // console.log(q);
+  const positionRef = collection(db, currentSearchImage);
+
+  const timeRef = db.collection("results");
 
   useEffect(() => {
     (async () => {
@@ -91,14 +91,31 @@ const SearchImage = () => {
             positionData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
           )
         );
-        const leaderboardData = await getDocs(
-          collection(timeRef, `${currentSearchImage}/players`)
+
+        const postsInUserRef = collection(
+          db,
+          `results/${currentSearchImage}/players`
         );
+
+        // order items
+        const q = query(postsInUserRef, orderBy("time"));
+
+        // async get data:
+        const leaderboardData = await getDocs(q);
         dispatch(
           setLeaderboardData(
             leaderboardData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
           )
         );
+
+        // const leaderboardData = await getDocs(
+        //   collection(timeRef, `${currentSearchImage}/players`)
+        // );
+        // dispatch(
+        //   setLeaderboardData(
+        //     leaderboardData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        //   )
+        // );
       } catch (error) {
         console.log(error);
       }
@@ -144,7 +161,7 @@ const SearchImage = () => {
 
   return (
     <StyledSearchImageContainer>
-      {currentSearchImageURL ? (
+      {currentSearchImageURL && isCounting ? (
         <StyledSearchContainer onClick={(e) => setCrosshairCoordinates(e)}>
           <StyledSearchImage
             src={currentSearchImageURL}
