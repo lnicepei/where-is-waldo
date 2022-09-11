@@ -19,7 +19,8 @@ interface CrosshairProps {
 }
 
 export interface Character {
-  id: string;
+  [key: string]: string;
+  coordinates: string;
 }
 
 const Crosshair: React.FC<CrosshairProps> = (props) => {
