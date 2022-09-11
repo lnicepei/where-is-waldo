@@ -28,7 +28,7 @@ const SearchImageChoiceCard: React.FC<SearchImageChoiceCardProps> = (props) => {
       )
     );
     dispatch(setIsCounting(true));
-    dispatch(setTime(0));
+    dispatch(setTime(new Date()));
     dispatch(setCurrentSearchImage(props.name));
     dispatch(setCurrentSearchImageURL(props.url));
   };
