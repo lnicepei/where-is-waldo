@@ -18,7 +18,7 @@ interface CrosshairProps {
   setWasClicked: ActionCreatorWithoutPayload<string>;
 }
 
-export interface Character {
+export interface HeroCoordinates {
   [key: string]: string;
   coordinates: string;
 }
@@ -35,20 +35,20 @@ const Crosshair: React.FC<CrosshairProps> = (props) => {
   // if click coordinates are within the area
   // -> mark found character as found
   const handleChoiceClick = (name: string) => {
-    rightCoordinates.forEach((character: Character) => {
-      if (character[name as keyof Character] && props.reference.current) {
+    rightCoordinates.forEach((heroCoordinates: HeroCoordinates) => {
+      if (props.reference.current) {
         if (
-          +character[name as keyof Character].split(" ")[0] <
+          +heroCoordinates[name].split(" ")[0] <
             (props.crosshairCoordinateX / props.reference.current.clientWidth) *
               100 &&
-          +character[name as keyof Character].split(" ")[1] <
+          +heroCoordinates[name].split(" ")[1] <
             (props.crosshairCoordinateY /
               props.reference.current.clientHeight) *
               100 &&
-          +character[name as keyof Character].split(" ")[2] >
+          +heroCoordinates[name].split(" ")[2] >
             (props.crosshairCoordinateX / props.reference.current.clientWidth) *
               100 &&
-          +character[name as keyof Character].split(" ")[3] >
+          +heroCoordinates[name].split(" ")[3] >
             (props.crosshairCoordinateY /
               props.reference.current.clientHeight) *
               100
