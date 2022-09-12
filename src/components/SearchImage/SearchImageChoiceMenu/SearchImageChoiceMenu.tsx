@@ -12,11 +12,9 @@ interface SearchImageChoiceMenuProps {
 const SearchImageChoiceMenu: React.FC<SearchImageChoiceMenuProps> = () => {
   const dispatch = useAppDispatch();
 
-  const time = new Date().toISOString();
-
   const handleChoiceClick = () => {
     dispatch(setIsCounting(true));
-    dispatch(setTime(time));
+    dispatch(setTime(new Date().toISOString()));
   };
 
   return (
