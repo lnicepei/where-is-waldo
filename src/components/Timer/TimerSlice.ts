@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { parseISO } from "date-fns";
 
 interface InitialState {
   time: string;
@@ -13,8 +12,8 @@ const initialState: InitialState = {
   resultTime: 0,
 };
 
-export const heroesReducer = createSlice({
-  name: "time",
+export const timerReducer = createSlice({
+  name: "timer",
   initialState: initialState,
   reducers: {
     setTime: (state, action: PayloadAction<string>) => {
@@ -27,6 +26,6 @@ export const heroesReducer = createSlice({
   },
 });
 
-export const { setIsCounting, setTime } = heroesReducer.actions;
+export const { setIsCounting, setTime } = timerReducer.actions;
 
-export default heroesReducer.reducer;
+export default timerReducer.reducer;
