@@ -14,15 +14,11 @@ import "firebase/compat/firestore";
 
 import { HeroInterface } from "../Header/Hero/Hero";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
-import { setIsCounting, setTime } from "../Timer/TimerSlice";
+import { setIsCounting } from "../Timer/TimerSlice";
 
 import {
   setRightCoordinates,
-  setWasClicked,
   setCurrentSearchImageURL,
-  setCrosshairCoordinateX,
-  setCrosshairCoordinateY,
-  setLeaderboardData,
 } from "./SearchImageSlice";
 
 import {
@@ -33,6 +29,8 @@ import {
 } from "./SearchImage.style";
 
 import { differenceInMilliseconds } from "date-fns";
+import { setLeaderboardData } from "../Leaderboard/LeaderboardSlice";
+import { setCrosshairCoordinateX, setCrosshairCoordinateY, setWasClicked } from "../Crosshair/CrosshairSlice";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBty4ic-Qsr_wyXC_CK2XHAnxve7jE1Ysw",
@@ -47,27 +45,31 @@ const SearchImage = () => {
   const dispatch = useAppDispatch();
 
   const isCounting = useAppSelector((state) => state.time.isCounting);
+
   const time = useAppSelector((state) => state.time.time);
+
   const heroes = useAppSelector((state) => state.heroes.value);
+
+  const leaderboardData = useAppSelector(
+    (state) => state.leaderboard.leaderboardData
+  );
 
   const currentSearchImage = useAppSelector(
     (state) => state.currentSearchImage.searchImage
   );
 
-  const wasClicked = useAppSelector(
-    (state) => state.currentSearchImage.wasClicked
-  );
+  const wasClicked = useAppSelector((state) => state.crosshair.wasClicked);
 
   const currentSearchImageURL = useAppSelector(
     (state) => state.currentSearchImage.currentSearchImageURL
   );
 
   const crosshairCoordinateX = useAppSelector(
-    (state) => state.currentSearchImage.crosshairCoordinateX
+    (state) => state.crosshair.crosshairCoordinateX
   );
 
   const crosshairCoordinateY = useAppSelector(
-    (state) => state.currentSearchImage.crosshairCoordinateY
+    (state) => state.crosshair.crosshairCoordinateY
   );
 
   const imageRef = useRef<HTMLImageElement>(null);
@@ -111,7 +113,8 @@ const SearchImage = () => {
         console.log(error);
       }
     })();
-  }, [positionRef, timeRef]);
+  }, [currentSearchImage]);
+  console.log(leaderboardData);
 
   // sets the coordinates of crosshair to clicked position
   // and hides it after the following click

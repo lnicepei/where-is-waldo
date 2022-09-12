@@ -10,7 +10,7 @@ export interface User {
 
 const Leaderboard = () => {
   const leaderboardData = useAppSelector(
-    (state) => state.currentSearchImage.leaderboardData
+    (state) => state.leaderboard.leaderboardData
   );
 
   return (
