@@ -14,11 +14,9 @@ const Leaderboard = () => {
     (state) => state.leaderboard.currentLeaderboardData
   );
 
-  console.log(currentLeaderboardData);
-
   return (
     <div>
-      {currentLeaderboardData && currentLeaderboardData.length ? (
+      {currentLeaderboardData?.length ? (
         <ol>
           {currentLeaderboardData.map((user) => (
             // eslint-disable-next-line react/jsx-key
