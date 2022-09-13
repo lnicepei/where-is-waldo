@@ -18,12 +18,16 @@ const Leaderboard = () => {
 
   return (
     <div>
-      {currentLeaderboardData.length ? (
-        currentLeaderboardData.map((user) => (
-          <div>
-            {user.name} : {user.time ? format(user.time, "mm:ss:SS") : ""}
-          </div>
-        ))
+      {currentLeaderboardData && currentLeaderboardData.length ? (
+        <ol>
+          {currentLeaderboardData.map((user) => (
+            // eslint-disable-next-line react/jsx-key
+            <li>
+              <div>{user.name}</div>
+              <div>{user.time ? format(user.time, "mm:ss:SS") : ""}</div>
+            </li>
+          ))}
+        </ol>
       ) : (
         <BarLoader />
       )}
