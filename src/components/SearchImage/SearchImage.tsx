@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 
 import Crosshair from "../Crosshair/Crosshair";
+import Leaderboard from "../Leaderboard/Leaderboard";
 
 import {
   addDoc,
@@ -9,6 +10,7 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
+
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 
@@ -22,6 +24,19 @@ import {
 } from "./SearchImageSlice";
 
 import {
+  setAllLeaderboardData,
+  setCurrentLeaderboardData,
+} from "../Leaderboard/LeaderboardSlice";
+
+import {
+  setCrosshairCoordinateX,
+  setCrosshairCoordinateY,
+  setWasClicked,
+} from "../Crosshair/CrosshairSlice";
+
+import searchImages from "./SearchImages";
+
+import {
   StyledSearchContainer,
   StyledSearchImage,
   StyledSearchImageChoiceMenu,
@@ -29,17 +44,6 @@ import {
 } from "./SearchImage.style";
 
 import { differenceInMilliseconds } from "date-fns";
-import {
-  setAllLeaderboardData,
-  setCurrentLeaderboardData,
-} from "../Leaderboard/LeaderboardSlice";
-import {
-  setCrosshairCoordinateX,
-  setCrosshairCoordinateY,
-  setWasClicked,
-} from "../Crosshair/CrosshairSlice";
-import searchImages from "./SearchImages";
-import Leaderboard from "../Leaderboard/Leaderboard";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBty4ic-Qsr_wyXC_CK2XHAnxve7jE1Ysw",
@@ -86,6 +90,10 @@ const SearchImage = () => {
     (state) => state.leaderboard.allLeaderboardData
   );
 
+  const rightCoordinates = useAppSelector(
+    (state) => state.currentSearchImage.rightCoordinates
+  );
+
   const imageRef = useRef<HTMLImageElement>(null);
 
   const app = firebase.initializeApp(firebaseConfig);
@@ -97,14 +105,15 @@ const SearchImage = () => {
     (async () => {
       try {
         const positionData = await getDocs(positionRef);
-        dispatch(
-          setRightCoordinates(
-            positionData.docs.map((doc) => ({
-              ...doc.data(),
-              coordinates: doc.id,
-            }))
-          )
-        );
+
+        if (!rightCoordinates?.length) {
+          const positionDataArray = positionData.docs.map((doc) => ({
+            ...doc.data(),
+            coordinates: doc.id,
+          }));
+
+          dispatch(setRightCoordinates(positionDataArray));
+        }
 
         const wiiPlayersResults = collection(db, `results/wii/players`);
 
@@ -145,6 +154,8 @@ const SearchImage = () => {
           id: doc.id,
         }));
 
+        //TODO: Try to refactor and populate allLeaderboardData array in one loop
+
         dispatch(
           setAllLeaderboardData([snesDataArray, wiiDataArray, ps2DataArray])
         );
@@ -152,6 +163,7 @@ const SearchImage = () => {
         console.log(error);
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSearchImage, isCounting]);
 
   useEffect(() => {
@@ -195,6 +207,7 @@ const SearchImage = () => {
     } catch (error) {
       console.log(error);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [heroes]);
 
   return (
