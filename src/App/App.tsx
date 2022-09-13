@@ -1,10 +1,17 @@
+import React from "react";
 import "./App.css";
-import Game from "../components/Game/Game";
+import { Provider } from "react-redux";
+import { store } from "../store";
+import Header from "../components/Header/Header";
+import SearchImage from "../components/SearchImage/SearchImage";
 
 function App() {
   return (
     <div className="App">
-      <Game />
+      <Provider store={store}>
+        <Header />
+        <SearchImage />
+      </Provider>
     </div>
   );
 }

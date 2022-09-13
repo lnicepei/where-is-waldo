@@ -14,15 +14,11 @@ import "firebase/compat/firestore";
 
 import { HeroInterface } from "../Header/Hero/Hero";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
-import { setIsCounting, setTime } from "../../Timer/TimerSlice";
+import { setIsCounting } from "../Timer/TimerSlice";
 
 import {
   setRightCoordinates,
-  setWasClicked,
   setCurrentSearchImageURL,
-  setCrosshairCoordinateX,
-  setCrosshairCoordinateY,
-  setLeaderboardData,
 } from "./SearchImageSlice";
 
 import {
@@ -33,6 +29,17 @@ import {
 } from "./SearchImage.style";
 
 import { differenceInMilliseconds } from "date-fns";
+import {
+  setAllLeaderboardData,
+  setCurrentLeaderboardData,
+} from "../Leaderboard/LeaderboardSlice";
+import {
+  setCrosshairCoordinateX,
+  setCrosshairCoordinateY,
+  setWasClicked,
+} from "../Crosshair/CrosshairSlice";
+import searchImages from "./SearchImages";
+import Leaderboard from "../Leaderboard/Leaderboard";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBty4ic-Qsr_wyXC_CK2XHAnxve7jE1Ysw",
@@ -46,40 +53,44 @@ const firebaseConfig = {
 const SearchImage = () => {
   const dispatch = useAppDispatch();
 
+  const isCounting = useAppSelector((state) => state.time.isCounting);
+
   const heroes = useAppSelector((state) => state.heroes.value);
+
+  const time = useAppSelector((state) => {
+    if (heroes.every((hero: HeroInterface) => hero.found == true)) {
+      return state.time.time;
+    }
+    return 0;
+  });
 
   const currentSearchImage = useAppSelector(
     (state) => state.currentSearchImage.searchImage
   );
 
-  const wasClicked = useAppSelector(
-    (state) => state.currentSearchImage.wasClicked
-  );
+  const wasClicked = useAppSelector((state) => state.crosshair.wasClicked);
 
   const currentSearchImageURL = useAppSelector(
     (state) => state.currentSearchImage.currentSearchImageURL
   );
 
   const crosshairCoordinateX = useAppSelector(
-    (state) => state.currentSearchImage.crosshairCoordinateX
+    (state) => state.crosshair.crosshairCoordinateX
   );
 
   const crosshairCoordinateY = useAppSelector(
-    (state) => state.currentSearchImage.crosshairCoordinateY
+    (state) => state.crosshair.crosshairCoordinateY
   );
 
-  const isCounting = useAppSelector((state) => state.time.isCounting);
-
-  const time = useAppSelector((state) => state.time.time);
+  const allLeaderboardData = useAppSelector(
+    (state) => state.leaderboard.allLeaderboardData
+  );
 
   const imageRef = useRef<HTMLImageElement>(null);
 
   const app = firebase.initializeApp(firebaseConfig);
-
   const db = firebase.firestore(app);
-
   const positionRef = collection(db, currentSearchImage);
-
   const timeRef = db.collection("results");
 
   useEffect(() => {
@@ -88,39 +99,69 @@ const SearchImage = () => {
         const positionData = await getDocs(positionRef);
         dispatch(
           setRightCoordinates(
-            positionData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+            positionData.docs.map((doc) => ({
+              ...doc.data(),
+              coordinates: doc.id,
+            }))
           )
         );
 
-        const postsInUserRef = collection(
-          db,
-          `results/${currentSearchImage}/players`
-        );
+        const wiiPlayersResults = collection(db, `results/wii/players`);
 
-        // order items
-        const q = query(postsInUserRef, orderBy("time"));
+        // order results
+        const wiiResultsQuery = query(wiiPlayersResults, orderBy("time"));
 
         // async get data:
-        const leaderboardData = await getDocs(q);
-        dispatch(
-          setLeaderboardData(
-            leaderboardData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-          )
-        );
+        const wiiLeaderboardData = await getDocs(wiiResultsQuery);
 
-        // const leaderboardData = await getDocs(
-        //   collection(timeRef, `${currentSearchImage}/players`)
-        // );
-        // dispatch(
-        //   setLeaderboardData(
-        //     leaderboardData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        //   )
-        // );
+        const wiiDataArray = wiiLeaderboardData.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+
+        const snesPlayersResults = collection(db, `results/snes/players`);
+
+        // order results
+        const snesResultsQuery = query(snesPlayersResults, orderBy("time"));
+
+        // async get data:
+        const snesLeaderboardData = await getDocs(snesResultsQuery);
+
+        const snesDataArray = snesLeaderboardData.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+
+        const ps2PlayersResults = collection(db, `results/ps2/players`);
+
+        // order results
+        const ps2ResultsQuery = query(ps2PlayersResults, orderBy("time"));
+
+        // async get data:
+        const ps2LeaderboardData = await getDocs(ps2ResultsQuery);
+
+        const ps2DataArray = ps2LeaderboardData.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+
+        dispatch(
+          setAllLeaderboardData([snesDataArray, wiiDataArray, ps2DataArray])
+        );
       } catch (error) {
         console.log(error);
       }
     })();
-  }, [positionRef, timeRef]);
+  }, [currentSearchImage, isCounting]);
+
+  useEffect(() => {
+    const index = searchImages.findIndex(
+      (image) => image.name == currentSearchImage
+    );
+
+    dispatch(setCurrentLeaderboardData(allLeaderboardData[index]));
+    dispatch(setCurrentSearchImageURL(searchImages[index].url));
+  });
 
   // sets the coordinates of crosshair to clicked position
   // and hides it after the following click
@@ -133,29 +174,26 @@ const SearchImage = () => {
       dispatch(setWasClicked());
     }
   };
-
   // if all heroes were found -> reset current image url and disable counting
   useEffect(() => {
-    if (heroes.every((hero: HeroInterface) => hero.found == true)) {
-      const addDataToDatabase = async () => {
-        try {
-          await addDoc(
-            collection(timeRef, `${currentSearchImage}/${"players"}`),
-            {
-              time: differenceInMilliseconds(new Date(), time),
+    try {
+      if (heroes.every((hero: HeroInterface) => hero.found)) {
+        (async () => {
+          try {
+            await addDoc(collection(timeRef, `${currentSearchImage}/players`), {
+              time: differenceInMilliseconds(new Date(), new Date(time)),
               name: prompt("Enter your name"),
-            }
-          );
-        } catch (err) {
-          console.log(err);
-        }
-      };
+            });
+          } catch (err) {
+            console.log(err);
+          }
+        })();
 
-      addDataToDatabase();
-      //TODO: write info to database
-      // https://www.youtube.com/watch?v=jCY6DH8F4oc
-      dispatch(setCurrentSearchImageURL(""));
-      dispatch(setIsCounting(false));
+        dispatch(setCurrentSearchImageURL(""));
+        dispatch(setIsCounting(false));
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, [heroes]);
 
@@ -172,6 +210,9 @@ const SearchImage = () => {
       ) : (
         <StyledSearchImageChoiceMenu />
       )}
+
+      {!isCounting && <Leaderboard />}
+
       <Crosshair
         crosshairCoordinateX={crosshairCoordinateX}
         crosshairCoordinateY={crosshairCoordinateY}

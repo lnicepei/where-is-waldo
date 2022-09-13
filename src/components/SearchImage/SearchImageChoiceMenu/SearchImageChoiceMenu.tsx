@@ -1,7 +1,6 @@
 import React from "react";
 import { useAppDispatch } from "../../../App/hooks";
-import { setIsCounting, setTime } from "../../../Timer/TimerSlice";
-import { setHeroes } from "../../Game/GameSlice";
+import { setIsCounting, setTime } from "../../Timer/TimerSlice";
 import searchImages from "../SearchImages";
 import SearchImageChoiceCard from "./SearchImageChoiceCard";
 
@@ -14,7 +13,7 @@ const SearchImageChoiceMenu: React.FC<SearchImageChoiceMenuProps> = () => {
 
   const handleChoiceClick = () => {
     dispatch(setIsCounting(true));
-    dispatch(setTime(new Date()));
+    dispatch(setTime(new Date().toISOString()));
   };
 
   return (

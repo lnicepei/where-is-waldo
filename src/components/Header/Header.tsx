@@ -4,7 +4,7 @@ import { HeroInterface } from "../Header/Hero/Hero";
 import { StyledHeader, StyledHero } from "./Header.style";
 
 import { useAppSelector } from "../../App/hooks";
-import Timer from "../../Timer/Timer";
+import Timer from "../Timer/Timer";
 
 const Header = () => {
   const heroes = useAppSelector((state) => state.heroes.value);

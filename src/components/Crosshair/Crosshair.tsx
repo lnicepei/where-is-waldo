@@ -2,7 +2,7 @@ import React from "react";
 import { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
 
 import { HeroInterface } from "../Header/Hero/Hero";
-import { setHeroes } from "../Game/GameSlice";
+import { setHeroes } from "../../App/AppSlice";
 
 import { StyledCrosshair, StyledOptions } from "./Crosshair.style";
 
@@ -18,8 +18,9 @@ interface CrosshairProps {
   setWasClicked: ActionCreatorWithoutPayload<string>;
 }
 
-export interface Character {
-  id: string;
+export interface HeroCoordinates {
+  [key: string]: string;
+  coordinates: string;
 }
 
 const Crosshair: React.FC<CrosshairProps> = (props) => {
@@ -34,20 +35,20 @@ const Crosshair: React.FC<CrosshairProps> = (props) => {
   // if click coordinates are within the area
   // -> mark found character as found
   const handleChoiceClick = (name: string) => {
-    rightCoordinates.forEach((character: Character) => {
-      if (character[name as keyof Character] && props.reference.current) {
+    rightCoordinates.forEach((heroCoordinates: HeroCoordinates) => {
+      if (props.reference.current && heroCoordinates[name]) {
         if (
-          +character[name as keyof Character].split(" ")[0] <
+          +heroCoordinates[name].split(" ")[0] <
             (props.crosshairCoordinateX / props.reference.current.clientWidth) *
               100 &&
-          +character[name as keyof Character].split(" ")[1] <
+          +heroCoordinates[name].split(" ")[1] <
             (props.crosshairCoordinateY /
               props.reference.current.clientHeight) *
               100 &&
-          +character[name as keyof Character].split(" ")[2] >
+          +heroCoordinates[name].split(" ")[2] >
             (props.crosshairCoordinateX / props.reference.current.clientWidth) *
               100 &&
-          +character[name as keyof Character].split(" ")[3] >
+          +heroCoordinates[name].split(" ")[3] >
             (props.crosshairCoordinateY /
               props.reference.current.clientHeight) *
               100
