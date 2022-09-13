@@ -2,23 +2,30 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "./Leaderboard";
 
 interface InitialState {
-  leaderboardData: User[];
+  currentLeaderboardData: User[];
+  allLeaderboardData: User[][];
 }
 
 const initialState: InitialState = {
-  leaderboardData: [],
+  currentLeaderboardData: [],
+  allLeaderboardData: [[]],
 };
 
 export const leaderboardReducer = createSlice({
   name: "leaderboard",
   initialState: initialState,
   reducers: {
-    setLeaderboardData: (state, action: PayloadAction<User[]>) => {
-      state.leaderboardData = action.payload;
+    setCurrentLeaderboardData: (state, action: PayloadAction<User[]>) => {
+      state.currentLeaderboardData = action.payload;
+    },
+
+    setAllLeaderboardData: (state, action: PayloadAction<User[][]>) => {
+      state.allLeaderboardData = action.payload;
     },
   },
 });
 
-export const { setLeaderboardData } = leaderboardReducer.actions;
+export const { setCurrentLeaderboardData, setAllLeaderboardData } =
+  leaderboardReducer.actions;
 
 export default leaderboardReducer.reducer;
