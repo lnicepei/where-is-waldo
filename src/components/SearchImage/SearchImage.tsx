@@ -39,6 +39,7 @@ import {
   setWasClicked,
 } from "../Crosshair/CrosshairSlice";
 import searchImages from "./SearchImages";
+import Leaderboard from "../Leaderboard/Leaderboard";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBty4ic-Qsr_wyXC_CK2XHAnxve7jE1Ysw",
@@ -55,9 +56,9 @@ const SearchImage = () => {
   const isCounting = useAppSelector((state) => state.time.isCounting);
 
   const heroes = useAppSelector((state) => state.heroes.value);
-  
+
   const time = useAppSelector((state) => {
-    if (!state.time.isCounting) {
+    if (heroes.every((hero: HeroInterface) => hero.found == true)) {
       return state.time.time;
     }
     return 0;
@@ -84,7 +85,6 @@ const SearchImage = () => {
   const allLeaderboardData = useAppSelector(
     (state) => state.leaderboard.allLeaderboardData
   );
-  console.log(allLeaderboardData);
 
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -105,44 +105,6 @@ const SearchImage = () => {
             }))
           )
         );
-
-        // searchImages.forEach(async (image) => {
-        //   const currentPlayersResults = collection(
-        //     db,
-        //     `results/${image.name}/players`
-        //   );
-
-        //   const currentResultsQuery = query(
-        //     currentPlayersResults,
-        //     orderBy("time")
-        //   );
-
-        //   const currentLeaderboardData = await getDocs(currentResultsQuery);
-
-        //   setAllLeaderboardData(currentLeaderboardData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        // });
-
-        // console.log(allLeaderboardData);
-
-        // if (allLeaderboardData.length)
-        //   dispatch(setCurrentLeaderboardData(allLeaderboardData));
-
-        // const playersResults = collection(
-        //   db,
-        //   `results/${currentSearchImage}/players`
-        // );
-
-        // // order results
-        // const resultsQuery = query(playersResults, orderBy("time"));
-
-        // // async get data:
-        // const leaderboardData = await getDocs(resultsQuery);
-
-        // dispatch(
-        //   setCurrentLeaderboardData(
-        //     leaderboardData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        //   )
-        // );
 
         const wiiPlayersResults = collection(db, `results/wii/players`);
 
@@ -183,25 +145,22 @@ const SearchImage = () => {
           id: doc.id,
         }));
 
-        console.log(ps2DataArray);
-
         dispatch(
-          setAllLeaderboardData([ps2DataArray, snesDataArray, wiiDataArray])
+          setAllLeaderboardData([snesDataArray, wiiDataArray, ps2DataArray])
         );
       } catch (error) {
         console.log(error);
       }
     })();
-  }, [currentSearchImage]);
+  }, [currentSearchImage, isCounting]);
 
   useEffect(() => {
-    // console.log(currentSearchImage);
-    setCurrentLeaderboardData(allLeaderboardData[0]);
     const index = searchImages.findIndex(
       (image) => image.name == currentSearchImage
     );
 
     dispatch(setCurrentLeaderboardData(allLeaderboardData[index]));
+    dispatch(setCurrentSearchImageURL(searchImages[index].url));
   });
 
   // sets the coordinates of crosshair to clicked position
@@ -215,12 +174,11 @@ const SearchImage = () => {
       dispatch(setWasClicked());
     }
   };
-
   // if all heroes were found -> reset current image url and disable counting
   useEffect(() => {
     try {
-      if (heroes.every((hero: HeroInterface) => hero.found == true)) {
-        const addDataToDatabase = async () => {
+      if (heroes.every((hero: HeroInterface) => hero.found)) {
+        (async () => {
           try {
             await addDoc(collection(timeRef, `${currentSearchImage}/players`), {
               time: differenceInMilliseconds(new Date(), new Date(time)),
@@ -229,9 +187,8 @@ const SearchImage = () => {
           } catch (err) {
             console.log(err);
           }
-        };
+        })();
 
-        addDataToDatabase();
         dispatch(setCurrentSearchImageURL(""));
         dispatch(setIsCounting(false));
       }
@@ -253,6 +210,9 @@ const SearchImage = () => {
       ) : (
         <StyledSearchImageChoiceMenu />
       )}
+
+      {!isCounting && <Leaderboard />}
+
       <Crosshair
         crosshairCoordinateX={crosshairCoordinateX}
         crosshairCoordinateY={crosshairCoordinateY}
