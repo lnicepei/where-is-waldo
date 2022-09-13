@@ -3,6 +3,7 @@ import SearchImageChoiceMenu from "./SearchImageChoiceMenu/SearchImageChoiceMenu
 
 export const StyledSearchImage = styled.img`
   width: 100vw;
+  max-width: 100%;
 `;
 
 export const StyledSearchContainer = styled.div`
