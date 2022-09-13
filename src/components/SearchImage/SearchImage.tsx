@@ -29,8 +29,16 @@ import {
 } from "./SearchImage.style";
 
 import { differenceInMilliseconds } from "date-fns";
-import { setLeaderboardData } from "../Leaderboard/LeaderboardSlice";
-import { setCrosshairCoordinateX, setCrosshairCoordinateY, setWasClicked } from "../Crosshair/CrosshairSlice";
+import {
+  setAllLeaderboardData,
+  setCurrentLeaderboardData,
+} from "../Leaderboard/LeaderboardSlice";
+import {
+  setCrosshairCoordinateX,
+  setCrosshairCoordinateY,
+  setWasClicked,
+} from "../Crosshair/CrosshairSlice";
+import searchImages from "./SearchImages";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBty4ic-Qsr_wyXC_CK2XHAnxve7jE1Ysw",
@@ -46,13 +54,14 @@ const SearchImage = () => {
 
   const isCounting = useAppSelector((state) => state.time.isCounting);
 
-  const time = useAppSelector((state) => state.time.time);
-
   const heroes = useAppSelector((state) => state.heroes.value);
-
-  const leaderboardData = useAppSelector(
-    (state) => state.leaderboard.leaderboardData
-  );
+  
+  const time = useAppSelector((state) => {
+    if (!state.time.isCounting) {
+      return state.time.time;
+    }
+    return 0;
+  });
 
   const currentSearchImage = useAppSelector(
     (state) => state.currentSearchImage.searchImage
@@ -71,6 +80,11 @@ const SearchImage = () => {
   const crosshairCoordinateY = useAppSelector(
     (state) => state.crosshair.crosshairCoordinateY
   );
+
+  const allLeaderboardData = useAppSelector(
+    (state) => state.leaderboard.allLeaderboardData
+  );
+  console.log(allLeaderboardData);
 
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -92,29 +106,103 @@ const SearchImage = () => {
           )
         );
 
-        // create reference to results
-        const playersResults = collection(
-          db,
-          `results/${currentSearchImage}/players`
-        );
+        // searchImages.forEach(async (image) => {
+        //   const currentPlayersResults = collection(
+        //     db,
+        //     `results/${image.name}/players`
+        //   );
+
+        //   const currentResultsQuery = query(
+        //     currentPlayersResults,
+        //     orderBy("time")
+        //   );
+
+        //   const currentLeaderboardData = await getDocs(currentResultsQuery);
+
+        //   setAllLeaderboardData(currentLeaderboardData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        // });
+
+        // console.log(allLeaderboardData);
+
+        // if (allLeaderboardData.length)
+        //   dispatch(setCurrentLeaderboardData(allLeaderboardData));
+
+        // const playersResults = collection(
+        //   db,
+        //   `results/${currentSearchImage}/players`
+        // );
+
+        // // order results
+        // const resultsQuery = query(playersResults, orderBy("time"));
+
+        // // async get data:
+        // const leaderboardData = await getDocs(resultsQuery);
+
+        // dispatch(
+        //   setCurrentLeaderboardData(
+        //     leaderboardData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        //   )
+        // );
+
+        const wiiPlayersResults = collection(db, `results/wii/players`);
 
         // order results
-        const resultsQuery = query(playersResults, orderBy("time"));
+        const wiiResultsQuery = query(wiiPlayersResults, orderBy("time"));
 
         // async get data:
-        const leaderboardData = await getDocs(resultsQuery);
+        const wiiLeaderboardData = await getDocs(wiiResultsQuery);
+
+        const wiiDataArray = wiiLeaderboardData.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+
+        const snesPlayersResults = collection(db, `results/snes/players`);
+
+        // order results
+        const snesResultsQuery = query(snesPlayersResults, orderBy("time"));
+
+        // async get data:
+        const snesLeaderboardData = await getDocs(snesResultsQuery);
+
+        const snesDataArray = snesLeaderboardData.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+
+        const ps2PlayersResults = collection(db, `results/ps2/players`);
+
+        // order results
+        const ps2ResultsQuery = query(ps2PlayersResults, orderBy("time"));
+
+        // async get data:
+        const ps2LeaderboardData = await getDocs(ps2ResultsQuery);
+
+        const ps2DataArray = ps2LeaderboardData.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+
+        console.log(ps2DataArray);
 
         dispatch(
-          setLeaderboardData(
-            leaderboardData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-          )
+          setAllLeaderboardData([ps2DataArray, snesDataArray, wiiDataArray])
         );
       } catch (error) {
         console.log(error);
       }
     })();
   }, [currentSearchImage]);
-  console.log(leaderboardData);
+
+  useEffect(() => {
+    // console.log(currentSearchImage);
+    setCurrentLeaderboardData(allLeaderboardData[0]);
+    const index = searchImages.findIndex(
+      (image) => image.name == currentSearchImage
+    );
+
+    dispatch(setCurrentLeaderboardData(allLeaderboardData[index]));
+  });
 
   // sets the coordinates of crosshair to clicked position
   // and hides it after the following click
@@ -130,26 +218,25 @@ const SearchImage = () => {
 
   // if all heroes were found -> reset current image url and disable counting
   useEffect(() => {
-    if (heroes.every((hero: HeroInterface) => hero.found == true)) {
-      const addDataToDatabase = async () => {
-        try {
-          await addDoc(
-            collection(timeRef, `${currentSearchImage}/${"players"}`),
-            {
+    try {
+      if (heroes.every((hero: HeroInterface) => hero.found == true)) {
+        const addDataToDatabase = async () => {
+          try {
+            await addDoc(collection(timeRef, `${currentSearchImage}/players`), {
               time: differenceInMilliseconds(new Date(), new Date(time)),
               name: prompt("Enter your name"),
-            }
-          );
-        } catch (err) {
-          console.log(err);
-        }
-      };
+            });
+          } catch (err) {
+            console.log(err);
+          }
+        };
 
-      addDataToDatabase();
-      //TODO: write info to database
-      // https://www.youtube.com/watch?v=jCY6DH8F4oc
-      dispatch(setCurrentSearchImageURL(""));
-      dispatch(setIsCounting(false));
+        addDataToDatabase();
+        dispatch(setCurrentSearchImageURL(""));
+        dispatch(setIsCounting(false));
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, [heroes]);
 
