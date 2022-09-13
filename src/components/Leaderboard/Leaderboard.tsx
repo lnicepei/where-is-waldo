@@ -18,14 +18,14 @@ const Leaderboard = () => {
 
   return (
     <div>
-      {currentLeaderboardData.map((user) =>
-        user.name ? (
+      {currentLeaderboardData.length ? (
+        currentLeaderboardData.map((user) => (
           <div>
             {user.name} : {user.time ? format(user.time, "mm:ss:SS") : ""}
           </div>
-        ) : (
-          <BarLoader />
-        )
+        ))
+      ) : (
+        <BarLoader />
       )}
     </div>
   );
