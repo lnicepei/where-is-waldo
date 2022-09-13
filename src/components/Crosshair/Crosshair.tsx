@@ -36,7 +36,7 @@ const Crosshair: React.FC<CrosshairProps> = (props) => {
   // -> mark found character as found
   const handleChoiceClick = (name: string) => {
     rightCoordinates.forEach((heroCoordinates: HeroCoordinates) => {
-      if (props.reference.current) {
+      if (props.reference.current && heroCoordinates[name]) {
         if (
           +heroCoordinates[name].split(" ")[0] <
             (props.crosshairCoordinateX / props.reference.current.clientWidth) *
