@@ -16,7 +16,7 @@ export const StyledHeader = styled.header`
   padding: 10px;
   justify-content: center;
   color: white;
-  backdrop-filter: blur(5px);
+  /* backdrop-filter: blur(5px); */
   user-select: none;
   background-color: rgba(41, 59, 72, 0.3);
   z-index: 2;
