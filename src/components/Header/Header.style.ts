@@ -1,11 +1,5 @@
 import styled from "styled-components";
-import Hero from "./Hero/Hero";
-
-interface Props {
-  name: string;
-  image: string;
-  found: boolean;
-}
+import Hero, { HeroInterface } from "./Hero/Hero";
 
 export const StyledHeader = styled.header`
   display: flex;
@@ -30,7 +24,7 @@ export const StyledHeader = styled.header`
   }
 `;
 
-export const StyledHero = styled(Hero)<Props>`
+export const StyledHero = styled(Hero)<HeroInterface>`
   display: flex;
   align-items: center;
   justify-content: center;
