@@ -3,8 +3,11 @@ import searchImages from "./SearchImages";
 import { HeroCoordinates } from "../Crosshair/Crosshair";
 
 interface InitialState {
+  /** name of search image */
   searchImage: string;
+  /** path to search image in ./SearchImages folder */
   currentSearchImageURL: string;
+  /** array with names and corresponding coordinates */
   rightCoordinates: HeroCoordinates[];
 }
 

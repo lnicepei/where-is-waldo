@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface InitialState {
+  /** initial state of the crosshair: hidden, top: 0, left: 0 */
   wasClicked: boolean;
   crosshairCoordinateX: number;
   crosshairCoordinateY: number;

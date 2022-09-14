@@ -34,43 +34,46 @@ import {
 
 import { differenceInMilliseconds } from "date-fns";
 import Header from "../Header/Header";
-import { db, timeRef } from "../../store/config";
 import { setHeroes } from "../../App/AppSlice";
-import Leaderboard from "../Leaderboard/Leaderboard";
+import Leaderboard, { User } from "../Leaderboard/Leaderboard";
+
+import { db, timeRef } from "../../store/config";
 
 const SearchImage = () => {
   const dispatch = useAppDispatch();
 
-  const isCounting = useAppSelector((state) => state.time.isCounting);
+  const isCounting: boolean = useAppSelector((state) => state.time.isCounting);
 
-  const heroes = useAppSelector((state) => state.heroes.value);
+  const heroes: HeroInterface[] = useAppSelector((state) => state.heroes.value);
 
-  const time = useAppSelector((state) => {
+  const time: string | 0 = useAppSelector((state) => {
     if (heroes.every((hero: HeroInterface) => hero.found == true)) {
       return state.time.time;
     }
     return 0;
   });
 
-  const currentSearchImage = useAppSelector(
+  const currentSearchImage: string | 0 = useAppSelector(
     (state) => state.currentSearchImage.searchImage
   );
 
-  const wasClicked = useAppSelector((state) => state.crosshair.wasClicked);
+  const wasClicked: boolean = useAppSelector(
+    (state) => state.crosshair.wasClicked
+  );
 
-  const currentSearchImageURL = useAppSelector(
+  const currentSearchImageURL: string = useAppSelector(
     (state) => state.currentSearchImage.currentSearchImageURL
   );
 
-  const crosshairCoordinateX = useAppSelector(
+  const crosshairCoordinateX: number = useAppSelector(
     (state) => state.crosshair.crosshairCoordinateX
   );
 
-  const crosshairCoordinateY = useAppSelector(
+  const crosshairCoordinateY: number = useAppSelector(
     (state) => state.crosshair.crosshairCoordinateY
   );
 
-  const allLeaderboardData = useAppSelector(
+  const allLeaderboardData: User[][] = useAppSelector(
     (state) => state.leaderboard.allLeaderboardData
   );
 
@@ -98,7 +101,7 @@ const SearchImage = () => {
   }, [currentSearchImage, isCounting]);
 
   useEffect(() => {
-    const index = searchImages.findIndex(
+    const index: number = searchImages.findIndex(
       (image) => image.name == currentSearchImage
     );
 
@@ -117,6 +120,7 @@ const SearchImage = () => {
       dispatch(setWasClicked());
     }
   };
+  
   // if all heroes were found -> reset current image url and disable counting
   useEffect(() => {
     try {
@@ -151,10 +155,9 @@ const SearchImage = () => {
   return (
     <StyledSearchImageContainer>
       <Header />
-      
+
       {currentSearchImageURL && isCounting ? (
-        <StyledSearchContainer
-        >
+        <StyledSearchContainer>
           <StyledSearchImage
             src={currentSearchImageURL}
             alt="Search Image"

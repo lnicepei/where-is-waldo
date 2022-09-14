@@ -6,6 +6,7 @@ import searchImages from "../SearchImages";
 import SearchImageChoiceCard from "./SearchImageChoiceCard";
 
 interface SearchImageChoiceMenuProps {
+  /** allows working with styled components */
   className?: string;
 }
 

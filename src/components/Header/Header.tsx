@@ -7,13 +7,13 @@ import { useAppSelector } from "../../App/hooks";
 import Timer from "../Timer/Timer";
 
 const Header = () => {
-  const heroes = useAppSelector((state) => state.heroes.value);
+  const heroes: HeroInterface[] = useAppSelector((state) => state.heroes.value);
 
-  const currentSearchImageURL = useAppSelector(
+  const currentSearchImageURL: string = useAppSelector(
     (state) => state.currentSearchImage.currentSearchImageURL
   );
 
-  const isCounting = useAppSelector((state) => state.time.isCounting);
+  const isCounting: boolean = useAppSelector((state) => state.time.isCounting);
 
   return (
     <>

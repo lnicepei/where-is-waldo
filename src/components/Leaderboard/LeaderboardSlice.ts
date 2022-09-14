@@ -2,7 +2,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "./Leaderboard";
 
 interface InitialState {
+  /** leaderboard of current search image */
   currentLeaderboardData: User[];
+  /** leaderboard with all 3 arrays */
   allLeaderboardData: User[][];
 }
 

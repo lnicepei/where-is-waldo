@@ -2,8 +2,11 @@ import React from "react";
 import { StyledCrosshairButton } from "../Crosshair.style";
 
 interface CrosshairButtonProps {
+  /** text to show inside the button*/
   name: string;
+  /** if false -> return empty react fragment*/
   found: boolean;
+  /** callback function passed to the onClick handler*/
   handleChoiceClick: (name: string) => void;
 }
 

@@ -4,10 +4,9 @@ import { useAppDispatch, useAppSelector } from "../../App/hooks";
 import { addMilliseconds, differenceInMilliseconds, format } from "date-fns";
 
 const Timer = () => {
-  const time = useAppSelector((state) => state.time.time);
-  const timeObject = new Date(time);
+  const time: string = useAppSelector((state) => state.time.time);
 
-  const isCounting = useAppSelector((state) => state.time.isCounting);
+  const timeObject: Date = new Date(time);
 
   const dispatch = useAppDispatch();
 

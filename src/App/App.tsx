@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { store } from "../store";
 import SearchImage from "../components/SearchImage/SearchImage";
 
-function App() {
+function App(): JSX.Element {
   return (
     <div className="App">
       <Provider store={store}>

@@ -12,23 +12,26 @@ import { setCurrentSearchImageURL } from "../SearchImage/SearchImageSlice";
 import searchImages from "../SearchImage/SearchImages";
 
 export interface User {
-  id?: string;
+  /** id from firebase */
+  id: string;
+  /** name from firebase */
   name?: string;
-  time?: Date | number;
+  /** time from firebase */
+  time?: number;
 }
 
 const Leaderboard = () => {
   const dispatch = useAppDispatch();
 
-  const currentLeaderboardData = useAppSelector(
+  const currentLeaderboardData: User[] = useAppSelector(
     (state) => state.leaderboard.currentLeaderboardData
   );
 
-  const currentSearchImage = useAppSelector(
+  const currentSearchImage: string = useAppSelector(
     (state) => state.currentSearchImage.searchImage
   );
 
-  const allLeaderboardData = useAppSelector(
+  const allLeaderboardData: User[][] = useAppSelector(
     (state) => state.leaderboard.allLeaderboardData
   );
 
@@ -85,7 +88,7 @@ const Leaderboard = () => {
   }, []);
 
   useEffect(() => {
-    const index = searchImages.findIndex(
+    const index: number = searchImages.findIndex(
       (image) => image.name == currentSearchImage
     );
 

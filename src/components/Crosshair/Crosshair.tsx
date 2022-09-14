@@ -11,30 +11,36 @@ import { useAppDispatch, useAppSelector } from "../../App/hooks";
 import CrosshairButton from "./CrosshairButton/CrosshairButton";
 
 interface CrosshairProps {
+  /** coordinates of cursor*/
   crosshairCoordinateX: number;
   crosshairCoordinateY: number;
+  /** shows cursor every other click*/
   wasClicked: boolean;
+  /** reference to search image*/
   reference: React.RefObject<HTMLImageElement>;
+  /** a setter for wasClicked */
   setWasClicked: ActionCreatorWithoutPayload<string>;
 }
 
 export interface HeroCoordinates {
+  /** key is 'name', value is name of character in firebase */
   [key: string]: string;
+  /** coordinates are kept as a string like so '24.4, 42.3, 42.5, 52.4' */
   coordinates: string;
 }
 
 const Crosshair: React.FC<CrosshairProps> = (props) => {
   const dispatch = useAppDispatch();
 
-  const heroes = useAppSelector((state) => state.heroes.value);
+  const heroes: HeroInterface[] = useAppSelector((state) => state.heroes.value);
 
-  const rightCoordinates = useAppSelector(
+  const rightCoordinates: HeroCoordinates[] = useAppSelector(
     (state) => state.currentSearchImage.rightCoordinates
   );
 
   // if click coordinates are within the area
   // -> mark found character as found
-  const handleChoiceClick = (name: string) => {
+  const handleChoiceClick: (name: string) => void = (name) => {
     rightCoordinates.forEach((heroCoordinates: HeroCoordinates) => {
       if (props.reference.current && heroCoordinates[name]) {
         if (

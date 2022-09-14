@@ -5,13 +5,17 @@ import {
   setCurrentSearchImage,
   setCurrentSearchImageURL,
 } from "../SearchImageSlice";
+
 import { useAppDispatch } from "../../../App/hooks";
 import { HeroInterface } from "../../Header/Hero/Hero";
 import { setHeroes } from "../../../App/AppSlice";
 
 interface SearchImageChoiceCardProps {
+  /** link to ./SearchImages photo */
   url: string;
+  /** name search image */
   name: string;
+  /** heroes to be found */
   heroes: HeroInterface[];
 }
 

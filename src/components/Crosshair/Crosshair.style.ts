@@ -1,13 +1,14 @@
 import styled from "styled-components";
 
-interface CrosshairProps {
+interface CrosshairStyleProps {
+  /**  counts top and left space using X, Y coordinates and window size  */
   crosshairCoordinateX: number;
   crosshairCoordinateY: number;
   windowWidth: number;
   windowHeight: number;
 }
 
-export const StyledCrosshair = styled.div<CrosshairProps>`
+export const StyledCrosshair = styled.div<CrosshairStyleProps>`
   display: flex;
   flex-direction: column;
   position: absolute;
