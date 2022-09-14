@@ -1,7 +1,11 @@
 import React from "react";
 import { useAppDispatch } from "../../../App/hooks";
 import { setIsCounting, setTime } from "../../Timer/TimerSlice";
-import { StyledMenu, StyledPlayButton } from "../SearchImage.style";
+import {
+  StyledMenu,
+  StyledMenuImagesContainer,
+  StyledPlayButton,
+} from "../SearchImage.style";
 import searchImages from "../SearchImages";
 import SearchImageChoiceCard from "./SearchImageChoiceCard";
 
@@ -13,18 +17,20 @@ const Menu: React.FC = () => {
     dispatch(setTime(new Date().toISOString()));
   };
 
+  const menuImages = searchImages.map((image) => {
+    return (
+      <SearchImageChoiceCard
+        name={image.name}
+        url={image.url}
+        heroes={image.heroes}
+        key={image.name}
+      />
+    );
+  });
+
   return (
     <StyledMenu>
-      {searchImages.map((image) => {
-        return (
-          <SearchImageChoiceCard
-            name={image.name}
-            url={image.url}
-            heroes={image.heroes}
-            key={image.name}
-          />
-        );
-      })}
+      <StyledMenuImagesContainer>{menuImages}</StyledMenuImagesContainer>
       <StyledPlayButton onClick={handleChoiceClick}>Play!</StyledPlayButton>
     </StyledMenu>
   );
