@@ -120,7 +120,7 @@ const SearchImage = () => {
       dispatch(setWasClicked());
     }
   };
-  
+
   // if all heroes were found -> reset current image url and disable counting
   useEffect(() => {
     try {
@@ -132,11 +132,15 @@ const SearchImage = () => {
             })
           )
         );
+
+        let name = prompt("Enter your name");
+        if (name) name = name.length < 50 && name.length > 0 ? name : "Unnamed";
+
         (async () => {
           try {
             await addDoc(collection(timeRef, `${currentSearchImage}/players`), {
               time: differenceInMilliseconds(new Date(), new Date(time)),
-              name: prompt("Enter your name"),
+              name: name,
             });
           } catch (err) {
             console.log(err);
