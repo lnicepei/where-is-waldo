@@ -69,27 +69,27 @@ const Crosshair: React.FC<CrosshairProps> = (props) => {
     dispatch(props.setWasClicked());
   };
 
+  const optionsJSX: JSX.Element[] = heroes.map((hero: HeroInterface) => {
+    return (
+      <CrosshairButton
+        name={hero.name}
+        found={hero.found}
+        handleChoiceClick={handleChoiceClick}
+        key={hero.name}
+      />
+    );
+  });
+
   return (
     <>
       {props.wasClicked && (
         <StyledCrosshair
-          crosshairCoordinateX={props.crosshairCoordinateX}
-          crosshairCoordinateY={props.crosshairCoordinateY}
+          crosshairCoordinateX={props.crosshairCoordinateX} // pass the props to
+          crosshairCoordinateY={props.crosshairCoordinateY} // styled components
           windowWidth={window.innerWidth}
           windowHeight={window.innerHeight}
         >
-          <StyledOptions>
-            {heroes.map((hero: HeroInterface) => {
-              return (
-                <CrosshairButton
-                  name={hero.name}
-                  found={hero.found}
-                  handleChoiceClick={handleChoiceClick}
-                  key={hero.name}
-                />
-              );
-            })}
-          </StyledOptions>
+          <StyledOptions>{optionsJSX}</StyledOptions>
         </StyledCrosshair>
       )}
     </>
