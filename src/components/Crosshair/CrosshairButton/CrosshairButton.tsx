@@ -1,5 +1,5 @@
 import React from "react";
-import { StyledOption } from "../Crosshair.style";
+import { StyledCrosshairButton } from "../Crosshair.style";
 
 interface CrosshairButtonProps {
   name: string;
@@ -11,12 +11,12 @@ const CrosshairButton: React.FC<CrosshairButtonProps> = (props) => {
   return (
     <>
       {!props.found && (
-        <StyledOption
+        <StyledCrosshairButton
           onClick={() => props.handleChoiceClick(props.name)}
           className="option"
         >
           {props.name}
-        </StyledOption>
+        </StyledCrosshairButton>
       )}
     </>
   );
