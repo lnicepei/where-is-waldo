@@ -24,7 +24,7 @@ export const StyledOptions = styled.div`
   padding-left: 20%;
 `;
 
-export const StyledOption = styled.button`
+export const StyledCrosshairButton = styled.button`
   border: 3px solid black;
   border-radius: 5px;
   width: 150%;
