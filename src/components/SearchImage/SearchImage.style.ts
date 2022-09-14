@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import SearchImageChoiceMenu from "./SearchImageChoiceMenu/SearchImageChoiceMenu";
+import Menu from "./SearchImageChoiceMenu/SearchImageChoiceMenu";
 
 export const StyledSearchImage = styled.img`
   width: 100vw;
@@ -10,18 +10,20 @@ export const StyledSearchContainer = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  /* align-items: center; */
 `;
 
-export const StyledSearchImageChoiceMenu = styled(SearchImageChoiceMenu)`
-  display: flex;
-  /* flex-direction: row; */
-  background-color: red;
+export const StyledSearchImageChoiceMenu = styled(Menu)`
+display: flex;
+/* flex-direction: row; */
+background-color: red;
+width: 80vw;
 `;
 
 export const StyledSearchImageContainer = styled.div`
   display: flex;
   justify-content: center;
-  /* align-items: center; */
+  align-items: center;
   flex-direction: column;
 `;
 
@@ -31,6 +33,9 @@ export const StyledPlayButton = styled.button`
 
 export const StyledMenu = styled.div`
   display: flex;
+  justify-content: center;
+  margin-top: 5vh;
+  /* width: 80vw; */
 `;
 
 export const StyledChooseCard = styled.div`
