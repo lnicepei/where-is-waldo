@@ -8,7 +8,7 @@ import Timer from "../Timer/Timer";
 
 const Header = () => {
   const heroes = useAppSelector((state) => state.heroes.value);
-  
+
   const currentSearchImageURL = useAppSelector(
     (state) => state.currentSearchImage.currentSearchImageURL
   );
