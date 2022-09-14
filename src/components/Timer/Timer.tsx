@@ -20,11 +20,9 @@ const Timer = () => {
 
   return (
     <>
-      {isCounting && (
-        <div>
-          {format(differenceInMilliseconds(new Date(), timeObject), "mm:ss:SS")}
-        </div>
-      )}
+      <div>
+        {format(differenceInMilliseconds(new Date(), timeObject), "mm:ss:SS")}
+      </div>
     </>
   );
 };
