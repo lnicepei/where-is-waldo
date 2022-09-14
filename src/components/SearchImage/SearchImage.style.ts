@@ -28,20 +28,23 @@ export const StyledSearchImageContainer = styled.div`
 `;
 
 export const StyledPlayButton = styled.button`
-  height: 10px;
+  width: 10%;
 `;
 
 export const StyledMenu = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 5vh;
+  align-items: center;
+  margin: 5vh 0;
+  flex-direction: column;
+  transition: all ease-in-out .3s;
   /* width: 80vw; */
 `;
 
-export const StyledChooseCard = styled.div`
+export const StyledMenuImagesContainer = styled.div`
   display: flex;
-  flex-direction: column;
-`;
+  margin: 40px;
+`
 
 export const StyledChooseTitle = styled.h1`
   font-size: 1rem;
