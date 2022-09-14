@@ -28,7 +28,6 @@ import searchImages from "./SearchImages";
 import {
   StyledSearchContainer,
   StyledSearchImage,
-  StyledSearchImageChoiceMenu,
   StyledSearchImageContainer,
 } from "./SearchImage.style";
 
@@ -38,6 +37,7 @@ import { setHeroes } from "../../App/AppSlice";
 import Leaderboard, { User } from "../Leaderboard/Leaderboard";
 
 import { db, timeRef } from "../../store/config";
+import Menu from "./SearchImageChoiceMenu/SearchImageChoiceMenu";
 
 const SearchImage = () => {
   const dispatch = useAppDispatch();
@@ -168,7 +168,7 @@ const SearchImage = () => {
           />
         </StyledSearchContainer>
       ) : (
-        <StyledSearchImageChoiceMenu />
+        <Menu />
       )}
 
       {!isCounting && <Leaderboard />}
