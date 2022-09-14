@@ -1,17 +1,9 @@
 import React, { useRef, useEffect } from "react";
 
 import Crosshair from "../Crosshair/Crosshair";
-import Leaderboard from "../Leaderboard/Leaderboard";
 
-import {
-  addDoc,
-  collection,
-  getDocs,
-  orderBy,
-  query,
-} from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 
-import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 
 import { HeroInterface } from "../Header/Hero/Hero";
@@ -23,10 +15,7 @@ import {
   setCurrentSearchImageURL,
 } from "./SearchImageSlice";
 
-import {
-  setAllLeaderboardData,
-  setCurrentLeaderboardData,
-} from "../Leaderboard/LeaderboardSlice";
+import { setCurrentLeaderboardData } from "../Leaderboard/LeaderboardSlice";
 
 import {
   setCrosshairCoordinateX,
@@ -44,15 +33,10 @@ import {
 } from "./SearchImage.style";
 
 import { differenceInMilliseconds } from "date-fns";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBty4ic-Qsr_wyXC_CK2XHAnxve7jE1Ysw",
-  authDomain: "where-is-waldo-bee31.firebaseapp.com",
-  projectId: "where-is-waldo-bee31",
-  storageBucket: "where-is-waldo-bee31.appspot.com",
-  messagingSenderId: "750759008904",
-  appId: "1:750759008904:web:3ddab790d89d56c29e9d3d",
-};
+import Header from "../Header/Header";
+import { db, timeRef } from "../../store/config";
+import { setHeroes } from "../../App/AppSlice";
+import Leaderboard from "../Leaderboard/Leaderboard";
 
 const SearchImage = () => {
   const dispatch = useAppDispatch();
@@ -90,75 +74,22 @@ const SearchImage = () => {
     (state) => state.leaderboard.allLeaderboardData
   );
 
-  const rightCoordinates = useAppSelector(
-    (state) => state.currentSearchImage.rightCoordinates
-  );
+  const positionRef = collection(db, currentSearchImage);
 
   const imageRef = useRef<HTMLImageElement>(null);
-
-  const app = firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore(app);
-  const positionRef = collection(db, currentSearchImage);
-  const timeRef = db.collection("results");
 
   useEffect(() => {
     (async () => {
       try {
         const positionData = await getDocs(positionRef);
 
-        if (!rightCoordinates?.length) {
-          const positionDataArray = positionData.docs.map((doc) => ({
-            ...doc.data(),
-            coordinates: doc.id,
-          }));
-
-          dispatch(setRightCoordinates(positionDataArray));
-        }
-
-        const wiiPlayersResults = collection(db, `results/wii/players`);
-
-        // order results
-        const wiiResultsQuery = query(wiiPlayersResults, orderBy("time"));
-
-        // async get data:
-        const wiiLeaderboardData = await getDocs(wiiResultsQuery);
-
-        const wiiDataArray = wiiLeaderboardData.docs.map((doc) => ({
+        const positionDataArray = positionData.docs.map((doc) => ({
           ...doc.data(),
-          id: doc.id,
+          coordinates: doc.id,
         }));
-
-        const snesPlayersResults = collection(db, `results/snes/players`);
-
-        // order results
-        const snesResultsQuery = query(snesPlayersResults, orderBy("time"));
-
-        // async get data:
-        const snesLeaderboardData = await getDocs(snesResultsQuery);
-
-        const snesDataArray = snesLeaderboardData.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-
-        const ps2PlayersResults = collection(db, `results/ps2/players`);
-
-        // order results
-        const ps2ResultsQuery = query(ps2PlayersResults, orderBy("time"));
-
-        // async get data:
-        const ps2LeaderboardData = await getDocs(ps2ResultsQuery);
-
-        const ps2DataArray = ps2LeaderboardData.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-
-        //TODO: Try to refactor and populate allLeaderboardData array in one loop
-
-        dispatch(
-          setAllLeaderboardData([snesDataArray, wiiDataArray, ps2DataArray])
-        );
+        console.log("coordinates have been set");
+        dispatch(setRightCoordinates(positionDataArray));
+        // }
       } catch (error) {
         console.log(error);
       }
@@ -175,7 +106,7 @@ const SearchImage = () => {
     dispatch(setCurrentSearchImageURL(searchImages[index].url));
   });
 
-  // sets the coordinates of crosshair to clicked position
+  // set the coordinates of crosshair to clicked position
   // and hides it after the following click
   const setCrosshairCoordinates = (
     e: React.MouseEvent<HTMLDivElement>
@@ -190,6 +121,13 @@ const SearchImage = () => {
   useEffect(() => {
     try {
       if (heroes.every((hero: HeroInterface) => hero.found)) {
+        dispatch(
+          setHeroes(
+            heroes.map((hero) => {
+              return { ...hero, found: false };
+            })
+          )
+        );
         (async () => {
           try {
             await addDoc(collection(timeRef, `${currentSearchImage}/players`), {
@@ -212,12 +150,18 @@ const SearchImage = () => {
 
   return (
     <StyledSearchImageContainer>
+      <Header />
+      
       {currentSearchImageURL && isCounting ? (
-        <StyledSearchContainer onClick={(e) => setCrosshairCoordinates(e)}>
+        <StyledSearchContainer
+        >
           <StyledSearchImage
             src={currentSearchImageURL}
             alt="Search Image"
             ref={imageRef}
+            onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+              setCrosshairCoordinates(e)
+            }
           />
         </StyledSearchContainer>
       ) : (
