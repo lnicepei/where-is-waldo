@@ -10,6 +10,7 @@ import {
 import { db } from "../../store/config";
 import { setCurrentSearchImageURL } from "../SearchImage/SearchImageSlice";
 import searchImages from "../SearchImage/SearchImages";
+import { StyledTable } from "./Leaderboard.style";
 
 export interface User {
   /** id from firebase */
@@ -20,7 +21,7 @@ export interface User {
   time?: number;
 }
 
-const Leaderboard = () => {
+const Leaderboard: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const currentLeaderboardData: User[] = useAppSelector(
@@ -97,21 +98,29 @@ const Leaderboard = () => {
   });
 
   return (
-    <div>
+    <>
       {currentLeaderboardData?.length ? (
-        <ol>
-          {currentLeaderboardData.map((user) => (
+        <StyledTable>
+          <thead>
+            <tr>
+              <th scope="col">Place</th>
+              <th scope="col">Name</th>
+              <th scope="col">Time</th>
+            </tr>
+          </thead>
+          {currentLeaderboardData.map((user, index) => (
             // eslint-disable-next-line react/jsx-key
-            <li>
-              <div>{user.name}</div>
-              <div>{user.time ? format(user.time, "mm:ss:SS") : ""}</div>
-            </li>
+            <tbody>
+              <tr>
+                <td>{index + 1}</td>
+                <td>{user.name}</td>
+                <td>{user?.time && format(user.time, "mm:ss:SS")}</td>
+              </tr>
+            </tbody>
           ))}
-        </ol>
-      ) : (
-        <BarLoader />
-      )}
-    </div>
+        </StyledTable>
+      ) : <BarLoader />}
+    </>
   );
 };
 
