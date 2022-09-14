@@ -9,17 +9,28 @@ export const StyledSearchImage = styled.img`
 export const StyledSearchContainer = styled.div`
   display: flex;
   justify-content: center;
+  flex-direction: column;
 `;
 
 export const StyledSearchImageChoiceMenu = styled(SearchImageChoiceMenu)`
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
+  background-color: red;
 `;
 
 export const StyledSearchImageContainer = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
+  flex-direction: column;
+`;
+
+export const StyledPlayButton = styled.button`
+  height: 10px;
+`;
+
+export const StyledMenu = styled.div`
+  display: flex;
 `;
 
 export const StyledChooseCard = styled.div`
