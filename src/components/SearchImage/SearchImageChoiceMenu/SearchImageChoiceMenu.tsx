@@ -5,12 +5,7 @@ import { StyledMenu, StyledPlayButton } from "../SearchImage.style";
 import searchImages from "../SearchImages";
 import SearchImageChoiceCard from "./SearchImageChoiceCard";
 
-interface SearchImageChoiceMenuProps {
-  /** allows working with styled components */
-  className?: string;
-}
-
-const SearchImageChoiceMenu: React.FC<SearchImageChoiceMenuProps> = () => {
+const Menu: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const handleChoiceClick = () => {
@@ -35,4 +30,4 @@ const SearchImageChoiceMenu: React.FC<SearchImageChoiceMenuProps> = () => {
   );
 };
 
-export default SearchImageChoiceMenu;
+export default Menu;
