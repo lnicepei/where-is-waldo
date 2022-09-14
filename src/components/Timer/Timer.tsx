@@ -3,7 +3,7 @@ import { setTime } from "./TimerSlice";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
 import { addMilliseconds, differenceInMilliseconds, format } from "date-fns";
 
-const Timer = () => {
+const Timer: React.FC = () => {
   const time: string = useAppSelector((state) => state.time.time);
 
   const timeObject: Date = new Date(time);
