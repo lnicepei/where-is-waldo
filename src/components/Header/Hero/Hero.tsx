@@ -10,12 +10,14 @@ export interface HeroInterface {
   /** allows using styled components */
   className?: string;
 }
-//TODO: Turn this into a styled component
+
 const Hero: React.FC<HeroInterface> = (props) => {
+  const url = new URL(props.image, import.meta.url).href;
+  
   return (
     <div className={props.className}>
       <h2>{props.name}</h2>
-      <img src={props.image} alt={props.name} />
+      <img src={url} alt={props.name} />
     </div>
   );
 };
