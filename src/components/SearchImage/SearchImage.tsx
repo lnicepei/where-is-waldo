@@ -1,21 +1,15 @@
 import React, { useRef, useEffect } from "react";
 
-import Crosshair from "../Crosshair/Crosshair";
-
-import { addDoc, collection, getDocs } from "firebase/firestore";
-
 import "firebase/compat/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 
 import { HeroInterface } from "../Header/Hero/Hero";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
-import { setIsCounting } from "../Timer/TimerSlice";
 
 import {
   setRightCoordinates,
   setCurrentSearchImageURL,
 } from "./SearchImageSlice";
-
-import { setCurrentLeaderboardData } from "../Leaderboard/LeaderboardSlice";
 
 import {
   setCrosshairCoordinateX,
@@ -23,26 +17,30 @@ import {
   setWasClicked,
 } from "../Crosshair/CrosshairSlice";
 
+import { setHeroes } from "../../App/AppSlice";
+import { setCurrentLeaderboardData } from "../Leaderboard/LeaderboardSlice";
+
 import searchImages from "./SearchImages";
 
 import {
-  StyledLeaderboard,
   StyledSearchImage,
   StyledSearchImageContainer,
 } from "./SearchImage.style";
 
 import { differenceInMilliseconds } from "date-fns";
+
+import Timer from "../Timer/Timer";
 import Header from "../Header/Header";
-import { setHeroes } from "../../App/AppSlice";
-import { User } from "../Leaderboard/Leaderboard";
+import Crosshair from "../Crosshair/Crosshair";
+import { setIsCounting } from "../Timer/TimerSlice";
+import Leaderboard, { User } from "../Leaderboard/Leaderboard";
+import Menu from "./SearchImageChoiceMenu/SearchImageChoiceMenu";
 
 import { db, timeRef } from "../../store/config";
-import Menu from "./SearchImageChoiceMenu/SearchImageChoiceMenu";
-import { StyledTimer } from "../Timer/Timer.style";
 
 const SearchImage = () => {
   const dispatch = useAppDispatch();
-
+  
   const isCounting: boolean = useAppSelector((state) => state.time.isCounting);
 
   const heroes: HeroInterface[] = useAppSelector((state) => state.heroes.value);
@@ -133,15 +131,30 @@ const SearchImage = () => {
           )
         );
 
+        const timeDifference = differenceInMilliseconds(
+          new Date(),
+          new Date(time)
+        );
+
         let name = prompt("Enter your name");
-        if (name) name = name.length < 50 && name.length > 0 ? name : "Unnamed";
+        if (name) {
+          if (name?.length > 50) name = name?.slice(0, 50);
+        } else {
+          name = "Unnamed";
+        }
 
         (async () => {
           try {
-            await addDoc(collection(timeRef, `${currentSearchImage.toLowerCase()}/players`), {
-              time: differenceInMilliseconds(new Date(), new Date(time)),
-              name: name,
-            });
+            await addDoc(
+              collection(
+                timeRef,
+                `${currentSearchImage.toLowerCase()}/players`
+              ),
+              {
+                time: timeDifference,
+                name: name,
+              }
+            );
           } catch (err) {
             console.log(err);
           }
@@ -159,7 +172,8 @@ const SearchImage = () => {
   return (
     <StyledSearchImageContainer>
       <Header />
-      {isCounting && <StyledTimer />}
+      
+      {isCounting && <Timer />}
 
       {currentSearchImageURL && isCounting ? (
         <StyledSearchImage
@@ -174,7 +188,7 @@ const SearchImage = () => {
         <Menu />
       )}
 
-      {!isCounting && <StyledLeaderboard />}
+      {!isCounting && <Leaderboard />}
 
       <Crosshair
         crosshairCoordinateX={crosshairCoordinateX}
