@@ -119,7 +119,7 @@ const Leaderboard: React.FC = () => {
             </tbody>
           ))}
         </StyledTable>
-      ) : <BarLoader />}
+      ) : <BarLoader color="#ffe54c" />}
     </>
   );
 };
