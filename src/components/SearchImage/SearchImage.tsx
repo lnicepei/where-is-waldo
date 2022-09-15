@@ -26,7 +26,7 @@ import {
 import searchImages from "./SearchImages";
 
 import {
-  StyledSearchContainer,
+  StyledLeaderboard,
   StyledSearchImage,
   StyledSearchImageContainer,
 } from "./SearchImage.style";
@@ -34,10 +34,11 @@ import {
 import { differenceInMilliseconds } from "date-fns";
 import Header from "../Header/Header";
 import { setHeroes } from "../../App/AppSlice";
-import Leaderboard, { User } from "../Leaderboard/Leaderboard";
+import { User } from "../Leaderboard/Leaderboard";
 
 import { db, timeRef } from "../../store/config";
 import Menu from "./SearchImageChoiceMenu/SearchImageChoiceMenu";
+import { StyledTimer } from "../Timer/Timer.style";
 
 const SearchImage = () => {
   const dispatch = useAppDispatch();
@@ -77,7 +78,7 @@ const SearchImage = () => {
     (state) => state.leaderboard.allLeaderboardData
   );
 
-  const positionRef = collection(db, currentSearchImage);
+  const positionRef = collection(db, currentSearchImage.toLowerCase());
 
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -90,7 +91,6 @@ const SearchImage = () => {
           ...doc.data(),
           coordinates: doc.id,
         }));
-        console.log("coordinates have been set");
         dispatch(setRightCoordinates(positionDataArray));
         // }
       } catch (error) {
@@ -138,7 +138,7 @@ const SearchImage = () => {
 
         (async () => {
           try {
-            await addDoc(collection(timeRef, `${currentSearchImage}/players`), {
+            await addDoc(collection(timeRef, `${currentSearchImage.toLowerCase()}/players`), {
               time: differenceInMilliseconds(new Date(), new Date(time)),
               name: name,
             });
@@ -159,23 +159,22 @@ const SearchImage = () => {
   return (
     <StyledSearchImageContainer>
       <Header />
+      {isCounting && <StyledTimer />}
 
       {currentSearchImageURL && isCounting ? (
-        <StyledSearchContainer>
-          <StyledSearchImage
-            src={currentSearchImageURL}
-            alt="Search Image"
-            ref={imageRef}
-            onClick={(e: React.MouseEvent<HTMLDivElement>) =>
-              setCrosshairCoordinates(e)
-            }
-          />
-        </StyledSearchContainer>
+        <StyledSearchImage
+          src={currentSearchImageURL}
+          alt="Search Image"
+          ref={imageRef}
+          onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+            setCrosshairCoordinates(e)
+          }
+        />
       ) : (
         <Menu />
       )}
 
-      {!isCounting && <Leaderboard />}
+      {!isCounting && <StyledLeaderboard />}
 
       <Crosshair
         crosshairCoordinateX={crosshairCoordinateX}
