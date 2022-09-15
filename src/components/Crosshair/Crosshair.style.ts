@@ -12,8 +12,6 @@ export const StyledCrosshair = styled.div<CrosshairStyleProps>`
   display: flex;
   flex-direction: column;
   position: absolute;
-  background-color: transparent;
-  box-sizing: border-box;
   left: ${(props) => (props.crosshairCoordinateX / props.windowWidth) * 100}%;
   top: ${(props) => (props.crosshairCoordinateY / props.windowHeight) * 100}%;
 `;
@@ -26,15 +24,14 @@ export const StyledOptions = styled.div`
 `;
 
 export const StyledCrosshairButton = styled.button`
-  border: none;
-  color: white;
-  background-color: darkgray;
+  color: black;
+  background-color: white;
+  border: 2px solid black;
   border-radius: 5px;
   width: 150%;
   margin: 2px;
-  padding: 2px;
-  font-family: 'Playfair Display', serif;
+  padding: 0 2px;
+  font-family: 'Orbitron', serif;
   font-weight: bolder;
   cursor: pointer;
-  /* z-index: 2; */
 `;
