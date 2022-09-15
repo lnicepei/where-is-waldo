@@ -40,7 +40,7 @@ import { db, timeRef } from "../../store/config";
 
 const SearchImage = () => {
   const dispatch = useAppDispatch();
-  
+
   const isCounting: boolean = useAppSelector((state) => state.time.isCounting);
 
   const heroes: HeroInterface[] = useAppSelector((state) => state.heroes.value);
@@ -172,7 +172,7 @@ const SearchImage = () => {
   return (
     <StyledSearchImageContainer>
       <Header />
-      
+
       {isCounting && <Timer />}
 
       {currentSearchImageURL && isCounting ? (
