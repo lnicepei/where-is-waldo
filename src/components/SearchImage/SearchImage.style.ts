@@ -10,10 +10,10 @@ export const StyledSearchImageContainer = styled.div`
   align-items: center;
   flex-direction: column;
   background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7)),
-    fixed no-repeat url("./src/components/SearchImage/SearchImages/wii.jpg"),
-    fixed url("./src/components/SearchImage/SearchImages/ps2.jpg"),
+    fixed no-repeat url("../where-is-waldo/SearchImages/wii.jpg"),
+    fixed url("../where-is-waldo/SearchImages/wii.jpg"),
     fixed
-      url("./src/components/SearchImage/SearchImages/pierre-roussel-snes-phone2-pal.jpg");
+      url("../where-is-waldo/SearchImages/wii.jpg");
   background-position: center;
   min-height: 100vh;
   @media screen and (max-width: 500px) {
