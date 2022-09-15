@@ -1,6 +1,6 @@
 const searchImages = [
   {
-    name: "snes",
+    name: "SNES",
     url: "src/components/SearchImage/SearchImages/pierre-roussel-snes-phone2-pal.jpg",
     heroes: [
       {
@@ -21,7 +21,7 @@ const searchImages = [
     ],
   },
   {
-    name: "wii",
+    name: "Wii",
     url: "src/components/SearchImage/SearchImages/wii.jpg",
     heroes: [
       {
@@ -42,7 +42,7 @@ const searchImages = [
     ],
   },
   {
-    name: "ps2",
+    name: "PS2",
     url: "src/components/SearchImage/SearchImages/ps2.jpg",
     heroes: [
       {
