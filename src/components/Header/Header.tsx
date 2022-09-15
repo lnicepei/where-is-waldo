@@ -4,7 +4,6 @@ import { HeroInterface } from "../Header/Hero/Hero";
 import { StyledHeader, StyledHero } from "./Header.style";
 
 import { useAppSelector } from "../../App/hooks";
-import Timer from "../Timer/Timer";
 
 const Header = () => {
   const heroes: HeroInterface[] = useAppSelector((state) => state.heroes.value);
@@ -31,7 +30,6 @@ const Header = () => {
           })}
         </StyledHeader>
       )}
-      {isCounting && <Timer />}
     </>
   );
 };
