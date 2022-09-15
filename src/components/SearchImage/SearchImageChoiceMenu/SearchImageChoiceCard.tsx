@@ -1,16 +1,20 @@
 import React from "react";
-import { StyledChooseCard, StyledChooseImage } from "../SearchImage.style";
+import {
+  StyledChooseCard,
+  StyledChooseImage,
+  StyledChooseImageTitle,
+} from "../SearchImage.style";
 
 import {
   setCurrentSearchImage,
   setCurrentSearchImageURL,
 } from "../SearchImageSlice";
 
-import { useAppDispatch } from "../../../App/hooks";
+import { useAppDispatch, useAppSelector } from "../../../App/hooks";
 import { HeroInterface } from "../../Header/Hero/Hero";
 import { setHeroes } from "../../../App/AppSlice";
 
-interface SearchImageChoiceCardProps {
+export interface SearchImageChoiceCardProps {
   /** link to ./SearchImages photo */
   url: string;
   /** name search image */
@@ -20,6 +24,12 @@ interface SearchImageChoiceCardProps {
 }
 
 const SearchImageChoiceCard: React.FC<SearchImageChoiceCardProps> = (props) => {
+  const searchImageURL = useAppSelector(
+    (state) => state.currentSearchImage.currentSearchImageURL
+  );
+
+  const isThisImage = props.url === searchImageURL;
+
   const dispatch = useAppDispatch();
 
   const handleChoiceClick = () => {
@@ -35,9 +45,13 @@ const SearchImageChoiceCard: React.FC<SearchImageChoiceCardProps> = (props) => {
   };
 
   return (
-    <StyledChooseCard onClick={handleChoiceClick}>
-      <h1>{props.name}</h1>
-      <StyledChooseImage src={props.url} alt={props.name} />
+    <StyledChooseCard onClick={handleChoiceClick} isThisImage={isThisImage}>
+      <StyledChooseImageTitle>{props.name}</StyledChooseImageTitle>
+      <StyledChooseImage
+        isThisImage={isThisImage}
+        src={props.url}
+        alt={props.name}
+      />
     </StyledChooseCard>
   );
 };
