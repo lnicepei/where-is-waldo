@@ -26,7 +26,15 @@ export const StyledOptions = styled.div`
 `;
 
 export const StyledCrosshairButton = styled.button`
-  border: 3px solid black;
+  border: none;
+  color: white;
+  background-color: darkgray;
   border-radius: 5px;
   width: 150%;
+  margin: 2px;
+  padding: 2px;
+  font-family: 'Playfair Display', serif;
+  font-weight: bolder;
+  cursor: pointer;
+  /* z-index: 2; */
 `;
