@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { setTime } from "./TimerSlice";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
 import { addMilliseconds, differenceInMilliseconds, format } from "date-fns";
+import { StyledTimer } from "./Timer.style";
 
 const Timer: React.FC = () => {
   const time: string = useAppSelector((state) => state.time.time);
@@ -18,11 +19,9 @@ const Timer: React.FC = () => {
   });
 
   return (
-    <>
-      <div>
-        {format(differenceInMilliseconds(new Date(), timeObject), "mm:ss:SS")}
-      </div>
-    </>
+    <StyledTimer>
+      {format(differenceInMilliseconds(new Date(), timeObject), "mm:ss:SS")}
+    </StyledTimer>
   );
 };
 
