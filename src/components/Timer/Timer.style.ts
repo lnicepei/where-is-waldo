@@ -1,13 +1,13 @@
 import styled from "styled-components";
-import Timer from "./Timer";
 
-export const StyledTimer = styled(Timer)`
+export const StyledTimer = styled.div`
   display: flex;
-  position: absolute;
-  top: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
   justify-content: center;
   color: white;
   user-select: none;
-  background-color: rgba(41, 59, 72, 0.3);
   z-index: 2;
+  font-family: 'Orbitron', sans-serif;
 `;
