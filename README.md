@@ -1,4 +1,4 @@
-# Where Is Waldo?(a photo tagging app)
+# Where Is Waldo? (a photo tagging app)
 
 ## Created using React, Redux, BaaS(Firebase) and Styled-components. 
 
