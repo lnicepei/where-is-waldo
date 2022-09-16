@@ -13,6 +13,13 @@ A game where you need to find and tag provided characters on an image. It uses b
   * Server-side time stamps to keep track of your game
   * Secure game updates using Firebase
 
+### Technologies 
+  * React 
+  * Redux
+  * Firebase
+  * Firestore
+  * Styled components
+
 This was another awesome project where I have learnt an enormous amount of useful tricks and technologies. Starting from redux, styled components and react, ending with its deployment to GitHub pages. I suggest you visit the link below to get acquainted with it. 
 
 ## Screenshots
