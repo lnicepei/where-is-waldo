@@ -1,10 +1,21 @@
 # Where Is Waldo? (a photo tagging app)
 
-## Created using React, Redux, BaaS(Firebase) and Styled-components. 
-
 ## [Live preview](https://lnicepei.github.io/where-is-waldo/)
 
 A game where you need to find and tag provided characters on an image. It uses backend(firebase) to check if you guessed right. So there is no way to cheat)
+
+## Tech Stack
+* React
+* Firebase
+* TypeScript
+* Styled-components
+
+## How to run the app
+
+1. Clone this repository by running `$ git clone https://github.com/lnicepei/where-is-waldo`
+2. Run `cd where-is-waldo`
+3. Run `npm i`
+4. Run `npm run dev`
 
 ### Main features
   * Real-time character verification
